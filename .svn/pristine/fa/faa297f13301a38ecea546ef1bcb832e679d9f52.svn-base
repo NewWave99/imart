@@ -1,0 +1,256 @@
+#main-container{
+    background:url('../images/bg-main.png') repeat-x;
+
+    width:100%;
+
+    /*add adjacent elements' size + padding*/   
+    /*margin: 50px 0 0 0;*/
+}
+
+#header {
+
+    /*display: block;*/
+    /*position: fixed;*/
+    /* keeps the header over the content as the content gets scrolled */
+    /*z-index: 10;*/
+    /*width:100%;*/
+    /*top: 0;*/
+    padding: 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+#top-container {
+    margin: 0px auto;
+    height: 50px;
+    font-size:8pt;
+}
+
+#top-content-wrapper {
+    margin: 0 auto; 
+    width: 1200px;
+}
+
+#logo{
+    float:left;
+    margin-top: 3px;
+}
+
+#navigation {
+    /*background-color: #0090F3;*/
+    position: relative;
+    margin-left:auto;
+    margin-right:auto;
+    padding-top: 4px;
+    width: 1200px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#user-profile a:link, #user-profile a:visited {
+    font-weight : bold;
+    text-decoration: none;
+}
+
+#user-profile a:link:hover, #user-profile a:visited:hover {
+    font-weight : bold;
+    text-decoration : underline;
+}
+
+#user-profile{
+    float: right; 
+    height: 50px;
+}
+
+#user-profile ul{
+    list-style:none; 
+    margin: 0px; 
+    padding: 0px; 
+    float:right;
+}
+
+#user-profile li{
+    float: left;
+    margin-top: 18px;
+}
+
+#user-profile li.label{
+    font-weight: bold;
+}
+
+#user-profile li.user{
+    float: left;
+    font-weight: bold;
+    background-image: url('../images/event_open.gif');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 1px 5px 0px 20px;
+}
+
+#user-profile li.cal{
+    float: left;
+    background-image: url('../images/calendar.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 1px 5px 0px 20px;
+}
+
+#user-profile li.lockout{
+    float: left;
+    background-image: url('../images/icon/logout.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 1px 5px 0px 20px;
+}
+
+#user-profile li.ip{
+    float: left;
+    background-image: url('../images/icon/networking.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 1px 5px 0px 20px;
+}
+
+#user-profile li.sap{
+    padding: 0px 5px 0px 5px;
+}
+
+#user-profile li.theme{
+    float: right;
+    margin-top: 14px;
+    padding: 0px;
+}
+
+#footer{
+    font-size: 10px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    position: relative;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 10px;
+    margin-left:auto;
+    margin-right:auto;
+    width: 1190px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#center-content {
+    position: relative;
+    width: 1190px;
+    min-height: 450px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 8px;
+    padding: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    vertical-align: top;
+    box-shadow:-1px 1px 2px #000000;
+    box-shadow:1px 1px 2px #000000;
+}
+
+/*#top a:link, #top a:visited {
+    color: white;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover {
+    color: black;
+    font-weight : bold;
+    text-decoration : underline;
+}*/
+
+.login-content {
+    position: relative;
+    background: #99ccff;
+    background: url('../images/login-bg.jpg') no-repeat;
+/*    width: 980px;*/
+    width: 1180px;
+    min-height: 450px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: 8px;
+    padding: 0px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    vertical-align: top;
+    box-shadow:-1px 1px 2px #000000;
+    box-shadow:1px 1px 2px #000000;
+}
+
+#login-container{
+    position: relative;
+    width: 450px;
+    height: 220px;
+    margin-left:auto;
+    margin-right:auto;
+
+    opacity:0.9;
+    filter:alpha(opacity=90);
+
+    padding: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #99CCFF;
+    vertical-align: top;
+}
+
+#login-content{
+    margin-left:auto;
+    margin-right:auto;
+    padding: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#login-title{
+    float: left;
+    background-image: url('../images/lock.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 1px 5px 0px 36px;
+    width: 90%;
+    height: 30px;
+}
+
+#login-language{
+    margin-top: 5px;
+    float: right; 
+    color: #d3d3d3; 
+}
+
+#header-content {
+    font-size:12px;
+    font-weight: bold;
+    /*background-color: #0090F3;*/
+    margin-top: 0px;
+    margin-left: 1px;
+    margin-bottom: 5px;
+
+    padding-left:4px;
+    padding-top: 6px;
+    height: 20px;
+
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#content-layout {
+    margin-top: 5px;
+    margin-left: 1px;
+    margin-bottom: 5px;
+    background-color: #FFF;
+
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}

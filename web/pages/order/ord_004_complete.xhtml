@@ -1,0 +1,54 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.cart']}" actionListener="#{navigationController.nextPage('product/ord_002_cart')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.buy']}" disabled="true"/>
+    </p:breadCrumb>
+    <p:focus context="content-layout"/>  
+    <p:panel id="content-layout" styleClass="margin">
+            <table style="width: 100%;"  border="0">
+                <tr>
+                    <td style="width: 22%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 18%"></td>
+                    <td style="width: 15%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 37%"></td>
+                </tr>
+                <tr>
+                    <td/>
+                    <td colspan="5"  style="text-align: left">
+                        <h:outputText value="#{app['paymentSuccess']}" styleClass="lbl_bold" style="color: darkgreen"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                          <p:spacer width="8" height="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['invoiceNo']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <h:outputText value="#{orderList001Controller.shippingID}" styleClass="lbl_bold" style="color: mediumblue"/>
+                    </td>
+                    <td style="text-align: right">
+                       
+                    </td>
+                    <td/>
+                    <td >
+                        <h:panelGroup style="text-align: left;">
+                            <p:commandButton value="#{msg['btn.report']}" icon="icon-report"  action="#{orderList001Controller.reportPDF()}"  update="@(form)" ajax="false"/>
+                            <p:commandButton value="#{msg['btn.back']}" icon="icon-back" actionListener="#{navigationController.nextPage('order/ord_001_cate')}" update="@(form)" global="false"/>
+                        </h:panelGroup> 
+                    </td>
+                </tr>
+            </table>  
+    </p:panel>
+</ui:composition>

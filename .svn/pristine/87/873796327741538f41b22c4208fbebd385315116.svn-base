@@ -1,0 +1,82 @@
+/*
+ * Copyright 2011 PrimeFaces Extensions.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * $Id: UserSettings.java 1225 2012-06-03 07:27:13Z ovaraksin@gmail.com $
+ */
+package com.sscs.kdb.common.theme;
+
+import com.sscs.kdb.common.util.JsfUtil;
+import com.sscs.kdb.common.util.LoaderConfig;
+import com.sscs.kdb.controller.UserInfoController;
+import com.sscs.kdb.dao.AuthUserFacadeLocal;
+import java.io.Serializable;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+/**
+ * User settings.
+ *
+ * @author Oleg Varaksin / last modified by $Author: ovaraksin@gmail.com $
+ * @version $Revision: 1225 $
+ */
+@ManagedBean(name = UserSettings.CONTROLLER_NAME)
+@SessionScoped
+public class UserSettings implements Serializable {
+
+    private static final long serialVersionUID = 20111020L;
+    public static final String CONTROLLER_NAME = "userSettings";
+    private List<Theme> availableThemes;
+    private Theme currentTheme;
+    private String theme;
+    @EJB
+    private AuthUserFacadeLocal authUserFacade;
+
+    public UserSettings() {
+    }
+
+    @PostConstruct
+    public void init() {
+        theme = LoaderConfig.getConfig("default_theme");
+        currentTheme = AvailableThemes.getInstance().getThemeForName(theme);
+        availableThemes = AvailableThemes.getInstance().getThemes();
+    }
+
+    public final List<Theme> getAvailableThemes() {
+        return availableThemes;
+    }
+
+    public final void setAvailableThemes(List<Theme> availableThemes) {
+        this.availableThemes = availableThemes;
+    }
+
+    public final Theme getCurrentTheme() {
+        return currentTheme;
+    }
+
+    public final void setCurrentTheme(Theme currentTheme) {
+        this.currentTheme = currentTheme;
+    }
+
+    public void editTheme() throws Exception {
+        UserInfoController userInfo = (UserInfoController) JsfUtil.getManagedBean(UserInfoController.CONTROLLER_NAME);
+        userInfo.getAuthUser().setTheme(currentTheme.getName());
+        userInfo.swapMenuTab(0);
+        authUserFacade.editTheme(userInfo.getAuthUser());
+    }
+}

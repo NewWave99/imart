@@ -1,0 +1,94 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.categorie']}" update="@(form)" global="false"/>
+    </p:breadCrumb>
+    
+    <p:panel id="content-layout" styleClass="margin">
+        <table style="width: 100%;">
+            <tr>
+                <td >
+                 <p:panel id="content4" styleClass="margin" >
+                     <table style="width: 100%;" border="0">
+                        <tr>
+                            <td style="width: 15%;"></td>
+                            <td style="width: 2%"></td>
+                            <td style="width: 30%"></td>
+                            <td style="width: 12%;"></td>
+                            <td style="width: 2%"></td>
+                            <td style="width: 28%"></td>
+                            <td style="width: 10%"></td>
+                         </tr>
+                         <tr>
+                            <td style="text-align: right;">
+                              <h:outputText value="#{app['productTypeName']}" styleClass="lbl_bold"/>
+                            </td>
+                            <td ></td>
+                            <td >
+                                <p:selectOneMenu  value="#{orderList001Controller.productTypeID}" style="width: 200px;" >  
+                                    <f:selectItems value="#{comboController.productTypeList}" />  
+                                </p:selectOneMenu>
+                            </td>
+                             <td style="text-align: right;">
+                                <h:outputText value="#{app['productCode']}" styleClass="lbl_bold"/>
+                            </td>
+                            <td ></td>
+                            <td >
+                               <p:inputText value="#{orderList001Controller.productID}" />
+                            </td>
+                         </tr>
+                          <tr>
+                            <td style="text-align: right;">
+                                <h:outputText value="#{app['productName']}" styleClass="lbl_bold"/>
+                            </td>
+                            <td ></td>
+                            <td >
+                              <p:inputText value="#{orderList001Controller.productName}" />
+                            </td>
+                            <td></td>
+                                <td ></td>
+                                <td >
+                                    <p:commandButton value="#{msg['btn.search']}" action="#{orderList001Controller.findByCriteria()}" icon="icon-search" update="@(form)"/>
+                                </td>
+                            </tr>
+                     </table>
+                </p:panel>                
+                </td>
+            </tr>
+        </table>
+     <p:dataGrid var="items" value="#{orderList001Controller.dataList}" columns="4" 
+        rows="12" paginator="true" id="cars"
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+        rowsPerPageTemplate="6,12,16" >
+ 
+        <f:facet name="header">
+            <h:outputText value="#{app['productItems']}" styleClass="lbl_bold"/>
+            <p:spacer width="10" height="10" />
+            <h:outputText value="#{orderList001Controller.seq}" style="text-align: right"/> 
+            <p:spacer width="10" height="10" />
+            <h:outputText value="#{app['productUnit']}" styleClass="lbl_bold"/>
+        </f:facet>
+ 
+        <p:panel header="#{items.product.productName}" style="text-align:center">
+            <h:panelGrid columns="1" style="width:100%">
+                  <h:graphicImage  value="#{items.product.picture}" style="width: 200px;height: 200px;"/>
+                  <h:outputText value="#{items.product.productID}" />
+                 <!-- <h:outputText value="#{items.product.productDesc}" class="truncate_word"/>-->
+                  <h:outputText value="#{items.product.productDesc}" />
+                  <h:outputText value="#{items.product.price}" class="lbl_bold" style="color: red;">
+                      <f:convertNumber pattern="฿ #,##0.00'.-'" locale="th_TH"/>
+                  </h:outputText>
+            </h:panelGrid>
+            
+            <p:commandButton value="#{msg['btn.detail']}" icon="icon-detail-prduct" action="#{orderList001Controller.find()}" update="@(form)" ajax="false" >
+                 <f:setPropertyActionListener value="#{items.product}" target="#{orderList001Controller.product}" />  
+            </p:commandButton>
+        </p:panel>
+ 
+    </p:dataGrid>
+    </p:panel>
+</ui:composition>

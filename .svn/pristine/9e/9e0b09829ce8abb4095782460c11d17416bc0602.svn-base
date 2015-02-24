@@ -1,0 +1,145 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "consultlang")
+@NamedQueries({
+    @NamedQuery(name = "Consultlang.findAll", query = "SELECT c FROM Consultlang c")})
+public class Consultlang implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "ConsultLangID")
+    private String consultLangID;
+    @Column(name = "LangLevel")
+    private Character langLevel;
+    @Size(max = 25)
+    @Column(name = "CreateBy")
+    private String createBy;
+    @Size(max = 25)
+    @Column(name = "ModifyBy")
+    private String modifyBy;
+    @Column(name = "LastModified")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified;
+    @JoinColumn(name = "MainConsultLangID", referencedColumnName = "MainConsultLangID")
+    @ManyToOne
+    private Mainconsultlang mainConsultLangID;
+    @JoinColumn(name = "ConsultID", referencedColumnName = "ConsultID")
+    @ManyToOne
+    private Consultant consultID;
+
+    public Consultlang() {
+    }
+
+    public Consultlang(String consultLangID) {
+        this.consultLangID = consultLangID;
+    }
+
+    public String getConsultLangID() {
+        return consultLangID;
+    }
+
+    public void setConsultLangID(String consultLangID) {
+        this.consultLangID = consultLangID;
+    }
+
+    public Character getLangLevel() {
+        return langLevel;
+    }
+
+    public void setLangLevel(Character langLevel) {
+        this.langLevel = langLevel;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getModifyBy() {
+        return modifyBy;
+    }
+
+    public void setModifyBy(String modifyBy) {
+        this.modifyBy = modifyBy;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Mainconsultlang getMainConsultLangID() {
+        return mainConsultLangID;
+    }
+
+    public void setMainConsultLangID(Mainconsultlang mainConsultLangID) {
+        this.mainConsultLangID = mainConsultLangID;
+    }
+
+    public Consultant getConsultID() {
+        return consultID;
+    }
+
+    public void setConsultID(Consultant consultID) {
+        this.consultID = consultID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (consultLangID != null ? consultLangID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Consultlang)) {
+            return false;
+        }
+        Consultlang other = (Consultlang) object;
+        if ((this.consultLangID == null && other.consultLangID != null) || (this.consultLangID != null && !this.consultLangID.equals(other.consultLangID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.Consultlang[ consultLangID=" + consultLangID + " ]";
+    }
+    
+}

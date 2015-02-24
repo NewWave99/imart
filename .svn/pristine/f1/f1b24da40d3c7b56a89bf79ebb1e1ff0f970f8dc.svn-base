@@ -1,0 +1,63 @@
+package com.sscs.kdb.controller;
+
+import com.sscs.kdb.common.util.ExceptionUtil;
+import com.sscs.kdb.common.util.JsfUtil;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+/**
+ * @author MR Aekasit Sengnualnim (Aek) Senior Software Developer
+ *
+ * SSC Solutions Co., Ltd. 333 Lao Peng Nguan Tower 1, 27th A Floor,
+ * Viphavadee-Rangsit Road, Jomphol, Jatujak, Bangkok 10900 Thailand Tel :+66
+ * (0) 2618 8638-9 Fax :+66 (0) 2618 8640 Mobile : +66 8912 90006 Skype :
+ * s.aekasit Email : aekasit@tsoc.co.th / aekasit@sscs.co.th MSN :
+ * s.aekasit@hotmail.com http://www.sscs.co.th/
+ *
+ * @create 21-09-2555 11:24:22
+ */
+@ManagedBean(name = NavigationController.CONTROLLER_NAME)
+@SessionScoped
+public class NavigationController implements Serializable {
+
+    public static final String CONTROLLER_NAME = "navigationController";
+    private String currentPage;
+
+    public NavigationController() {
+    }
+
+    @PostConstruct
+    public void init() {
+        currentPage = "dashboard";
+    }
+
+    public String getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(String currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public void nextPage(String page) {
+        this.currentPage = page;
+    }
+    
+    public void nextPage(String page, String controller) {
+        try {
+            this.currentPage = page;
+            MethodController method = (MethodController) JsfUtil.getManagedBean(controller);
+            if (method != null) {
+                method.cancel();
+            }
+        } catch (Exception ex) {
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+}

@@ -1,0 +1,102 @@
+<p:dialog   xmlns:h="http://java.sun.com/jsf/html"
+            xmlns:p="http://primefaces.org/ui"
+            xmlns:f="http://java.sun.com/jsf/core"
+            header="#{msg['user-info.title']}"
+            widgetVar="user_info"
+            resizable="false"
+            width="450"
+            modal="true">
+
+    <p:ajax event="close" update="profile-form" global="false" listener="#{userInfoController.swapMenuTab(0)}"/>
+
+    <h:form id="profile-form" prependId="false">
+        <p:focus context="profile-panel"/> 
+
+        <h:panelGrid id="profile-panel" columns="2" cellpadding="4" cellspacing="2" rendered="#{userInfoController.tabIndex == 0}">
+
+            <h:outputLabel value="#{msg['user-info.full-name']}" styleClass="lbl_bold"/>
+            <h:outputText value="#{userInfoController.authUser.firstName} #{userInfoController.authUser.lastName}"/>
+
+            <h:outputLabel value="#{msg['user-info.modifield-date']}" styleClass="lbl_bold"/>
+            <h:outputText value="#{userInfoController.authUser.revisedDt}" style="color: grey;">
+                <f:convertDateTime pattern="dd MMM yyyy HH:mm"/>
+            </h:outputText>
+
+            <h:outputLabel value="#{msg['user-info.created-date']}" styleClass="lbl_bold"/>
+            <h:outputText value="#{userInfoController.authUser.createdDt}" style="color: grey;">
+                <f:convertDateTime pattern="dd MMM yyyy HH:mm"/>
+            </h:outputText>
+        </h:panelGrid>
+
+
+        <h:panelGrid id="auth-panel" columns="2" cellpadding="2" cellspacing="2" rendered="#{userInfoController.tabIndex == 1}">
+
+            <h:outputLabel value="#{msg['user-info.username']}" styleClass="lbl_bold"/>
+            <p:inputText value="#{userInfoController.authUser.username}" readonly="true" styleClass="readonly"/>
+
+            <h:outputLabel value="#{msg['user-info.password1']}" styleClass="lbl_bold"/>
+            <p:password feedback="true" value="#{userInfoController.password1}" styleClass="mandatory"
+                        promptLabel="#{msg['user-info.password.promtlabel']}" weakLabel="#{msg['user-info.password.weaklabel']}"  
+                        goodLabel="#{msg['user-info.password.goodlabel']}" strongLabel="#{msg['user-info.password.stronglabel']}"/>
+
+            <h:outputLabel value="#{msg['user-info.password2']}" styleClass="lbl_bold"/>
+            <p:password feedback="true" value="#{userInfoController.password2}" styleClass="mandatory"
+                        promptLabel="#{msg['user-info.password.promtlabel']}" weakLabel="#{msg['user-info.password.weaklabel']}"  
+                        goodLabel="#{msg['user-info.password.goodlabel']}" strongLabel="#{msg['user-info.password.stronglabel']}"/>
+
+            <h:outputLabel/>
+            <h:panelGroup>
+                <p:commandButton icon="icon-save" actionListener="#{userInfoController.editPassword()}" value="#{msg['btn.save']}" global="false" update="profile-form,:default_msg"/>
+                <p:commandButton icon="icon-cancel" actionListener="#{userInfoController.resetPassword()}" value="#{msg['btn.clear']}" global="false" update="profile-form"/>
+            </h:panelGroup>
+        </h:panelGrid>
+
+        <h:panelGrid id="theme-panel" columns="2" cellpadding="2" cellspacing="2" rendered="#{userInfoController.tabIndex == 2}">
+            <h:outputLabel value="#{msg['user-info.theme-name']}" styleClass="lbl_bold"/>
+
+            <p:selectOneMenu id="themeSelectMenu" value="#{userSettings.currentTheme}" var="theme" effect="slide"
+                             style="width: 180px;">
+                <f:converter converterId="com.sscs.kdb.common.theme.ThemeConverter"/>
+                <f:selectItems var="t"
+                               value="#{userSettings.availableThemes}"
+                               itemLabel="#{t.name}"
+                               itemValue="#{t}"/>
+                <p:column>
+                    <p:graphicImage value="#{theme.image}" rendered="${not empty theme.image}"/>
+                </p:column>
+                <p:column>#{theme.name}</p:column>
+            </p:selectOneMenu>
+            <h:outputLabel/>
+            <h:panelGroup>
+                <p:commandButton icon="icon-save" actionListener="#{userSettings.editTheme()}" value="#{msg['btn.save']}" global="false" ajax="false" update="profile-form,:default_msg"/>
+            </h:panelGroup>
+        </h:panelGrid>
+
+    </h:form>
+
+    <f:facet name="footer">
+
+        <p:commandButton icon="icon-person" value="#{msg['user-info.title-userprofile']}"
+                         actionListener="#{userInfoController.swapMenuTab(0)}"
+                         tabindex="#{userInfoController.tabIndex}" 
+                         update="profile-form" 
+                         title="#{msg['user-info.title-userprofile']}"
+                         global="false">
+        </p:commandButton>
+
+        <p:commandButton icon="icon-chg-key" value="#{msg['user-info.title-password']}"
+                         actionListener="#{userInfoController.swapMenuTab(1)}"
+                         update="profile-form"
+                         title="#{msg['user-info.title-password']}"
+                         tabindex="#{userInfoController.tabIndex}"
+                         global="false"/>
+
+        <p:commandButton icon="icon-color" value="#{msg['user-info.theme-name']}"
+                         actionListener="#{userInfoController.swapMenuTab(2)}"
+                         update="profile-form"
+                         title="#{msg['user-info.theme-name']}"
+                         tabindex="#{userInfoController.tabIndex}"
+                         global="false"/>
+    </f:facet>
+
+</p:dialog>

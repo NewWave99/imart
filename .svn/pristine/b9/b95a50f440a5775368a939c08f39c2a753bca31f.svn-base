@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="./WEB-INF/inc-templates/login-template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Login - #{msg['application.title']}"/>
+    </ui:define>
+
+    <ui:define name="content">
+        <ui:decorate template="./WEB-INF/inc-templates/content-template.xhtml">
+            <ui:define name="content_container">
+
+                <h:form id="login_form" acceptcharset="UTF-8" enctype="multipart/form-data" prependId="false">
+                    <h:panelGroup  style="padding-top: 100px;" layout="block">
+                        <div id="login-container">
+                            <div id="login-content">
+                                <div id="login-title">
+                                    <h1><h:outputLabel value="#{msg['login.label.title']}" style="font-weight: bolder;"/></h1>
+                                </div>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <h:panelGrid columns="2" border="0" width="100%">
+                                    <p:outputLabel for="username" style="font-weight:bold;" value="#{msg['login.label.username']} :"/>
+                                    <p:inputText autocomplete="off" id="username" size="26" value="#{authenticationController.username}" style="#{errorcheck.getErrorStyle('login_form:username')}"/>
+                                    <p:outputLabel for="password" value="#{msg['login.label.password']} :" style="font-weight:bold;"/>
+                                    <p:password autocomplete="off" id="password" size="26" value="#{authenticationController.password}" style="#{errorcheck.getErrorStyle('login_form:password')}"/>
+                                    <h:outputLabel value=""/>
+                                    <p:commandButton  id="login" icon="icon-chg-key" value="#{msg['login.btn.login']}" actionListener="#{authenticationController.login()}" style="font-weight: bold;" update=":default_msg"/>
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+
+            </ui:define>
+        </ui:decorate>
+    </ui:define>
+
+</ui:composition>

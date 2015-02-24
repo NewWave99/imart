@@ -1,0 +1,877 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.guitararts.controller.pur;
+
+import com.sscs.guitararts.common.constants.Constants;
+import com.sscs.guitararts.common.constants.ReportConstant;
+import com.sscs.guitararts.common.util.DateTimeUtil;
+import com.sscs.guitararts.common.util.ExceptionUtil;
+import com.sscs.guitararts.common.util.JsfUtil;
+import com.sscs.guitararts.common.util.MsgBundleLoader;
+import com.sscs.guitararts.common.util.NumberUtil;
+import com.sscs.guitararts.common.util.ReportUtil;
+import com.sscs.guitararts.common.util.StringUtil;
+import com.sscs.guitararts.common.util.UploadUtil;
+import com.sscs.guitararts.controller.MethodController;
+import com.sscs.guitararts.controller.NavigationController;
+import com.sscs.guitararts.controller.SelectedData;
+import com.sscs.guitararts.controller.SelectedDataModel;
+import com.sscs.guitararts.controller.UserInfoController;
+import com.sscs.guitararts.entity.SilverGenCustomer;
+import com.sscs.guitararts.entity.SilverProducts;
+import com.sscs.guitararts.entity.SilverPurchase;
+import com.sscs.guitararts.entity.SilverPurchaseDetail;
+import com.sscs.guitararts.log.util.LogUtil;
+import com.sscs.guitararts.reportbean.PUR002ReportBean;
+import com.sscs.guitararts.service.SilverInventoryService;
+import com.sscs.guitararts.service.SilverProductsService;
+import com.sscs.guitararts.service.SilverPurchaseService;
+import com.sscs.guitararts.service.SilverService;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import org.apache.log4j.Logger;
+
+/**
+ *
+ * @author Administrator
+ */
+@ManagedBean(name = "pur002Controller")
+@SessionScoped
+public class PUR002Controller extends MethodController implements Serializable {
+
+    private static Logger logger = LogUtil.getLogger(PUR002Controller.class);
+    public static final String BEAN_NAME = "pur002Controller";
+    @EJB
+    private SilverProductsService silverProductsService;
+    @EJB
+    private SilverService silverService;
+    @EJB
+    private SilverInventoryService silverInventoryService;
+    @EJB
+    private SilverPurchaseService silverPurchaseService;
+    private UserInfoController userInfo;
+    private NavigationController navigationController;
+    //add
+    private String purPriceType;
+    private String purCode;
+    private String purInvoiceNo;
+    private String purPreorderNo;
+    private Date purDate;
+    private String purCusCode;
+    private String cusName;
+    private String cusAddress;
+    private String cusTel;
+    private String cusFax;
+    private String cusEmail;
+    private Integer purTotalQuantity;
+    private boolean checkVat;
+    private Double purVat;
+    private Double purTotalAmount;
+    private Double purDiscount;
+    private Double purSubTotal;
+    private Double purGrandTotal;
+    private Double purDeposit;
+    private Double purBalance;
+    private Double purReceiveMoney;
+    private Double purReturnChange;
+    private String sales;
+    private String purRemark;
+    // detail
+    private String purProCodeS;
+    private Integer quantity;
+    private boolean check;
+    private List<PUR002Controller> dataList;
+    private SilverProducts silverProducts;
+    private Integer seq;
+    private String imgPath;
+    private Integer proQuantity;
+    private Integer stockBalance;
+    private Integer stockOrderBalance;
+    private Double totalWeight;
+    private Double latestPrice;
+    private Double price;
+    private Double amount;
+    //search
+    private String proCusSearch;
+    private SelectedDataModel proCusList;
+    private SelectedData selectProCus;
+
+    @PostConstruct
+    @Override
+    public void init() throws Exception {
+        String METHOD_NAME = "init";
+        try {
+            userInfo = (UserInfoController) JsfUtil.getManagedBean(UserInfoController.CONTROLLER_NAME);
+            navigationController = (NavigationController) JsfUtil.getManagedBean(NavigationController.CONTROLLER_NAME);
+            LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+
+            //purInvoiceNo = silverService.genCodeByCodeType(Constants.SILVER_GEN_CODE_TYPE_INVOICE_NO);
+            //purDate = DateTimeUtil.currentDate();
+            //purPreorderNo = silverService.genCodeByCodeType(Constants.SILVER_GEN_CODE_TYPE_PREORDER_NO);
+            purPriceType = "R";
+            purCusCode = "";
+            cusName = "";
+            cusAddress = "";
+            cusTel = "";
+            cusFax = "";
+            cusEmail = "";
+            purProCodeS = "";
+            quantity = 1;
+            seq = 1;
+            dataList = new ArrayList<PUR002Controller>();
+            purTotalQuantity = 0;
+            checkVat = false;
+            purVat = 0.0;
+            purTotalAmount = 0.0;
+            purDiscount = 0.0;
+            purSubTotal = 0.0;
+            purGrandTotal = 0.0;
+            purDeposit = 0.0;
+            purBalance = 0.0;
+            purReceiveMoney = 0.0;
+            purReturnChange = 0.0;
+            sales = "";
+            purRemark = "";
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void insert() throws Exception {
+        String METHOD_NAME = "insert";
+        try {
+            //LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            if (StringUtil.isNullOrEmpty(purProCodeS)) {
+                error = ExceptionUtil.addLineException(error, "errors.1001", new String[]{MsgBundleLoader.getMessage("proCode", MsgBundleLoader.APPLICATIONRESOURCES_PATH)});
+                JsfUtil.addErrorMessages(error);
+                return;
+            }
+            SilverProducts silPro = silverProductsService.findSilverProducts(purProCodeS);
+            if (StringUtil.isNullOrEmpty(silPro)) {
+                error = ExceptionUtil.addLineException(error, "errors.1009", new String[]{purProCodeS});
+                JsfUtil.addErrorMessages(error);
+                purProCodeS = "";
+                quantity = 1;
+                return;
+            }
+            List<Integer> sb = silverInventoryService.findInvSysStock(purProCodeS);
+            boolean chk = true;
+            int qty;
+            int stb;
+            for (int i = 0; i < dataList.size(); i++) {
+                PUR002Controller pur002 = (PUR002Controller) dataList.get(i);
+                if (purProCodeS.equals(pur002.getSilverProducts().getProCode())) {
+                    qty = pur002.getProQuantity() + quantity;
+                    stb = (sb.get(0) + sb.get(1)) - qty;
+                    if (stb < 0) {
+                        error = ExceptionUtil.addLineException(error, "errors.1006", new String[]{purProCodeS});
+                        JsfUtil.addErrorMessages(error);
+                        purProCodeS = "";
+                        quantity = 1;
+                        return;
+                    }
+                    pur002.setProQuantity(qty);
+                    pur002.setStockBalance(sb.get(0) - qty);
+                    pur002.setStockOrderBalance(sb.get(1));
+                    pur002.setTotalWeight(pur002.getProQuantity() * silPro.getProWeight());
+                    pur002.setAmount(pur002.getProQuantity() * pur002.getPrice());
+                    chk = false;
+                    break;
+                }
+            }
+            if (chk) {
+                PUR002Controller pur002 = new PUR002Controller();
+                pur002.setCheck(false);
+                pur002.setImgPath(UploadUtil.getFilePath(silPro.getProImgPath()));
+                pur002.setSilverProducts(silPro);
+                qty = NumberUtil.getInteger(pur002.getProQuantity()) + quantity;
+                stb = (sb.get(0) + sb.get(1)) - qty;
+                if (stb < 0) {
+                    error = ExceptionUtil.addLineException(error, "errors.1006", new String[]{purProCodeS});
+                    JsfUtil.addErrorMessages(error);
+                    purProCodeS = "";
+                    quantity = 1;
+                    return;
+                }
+                pur002.setProQuantity(qty);
+                pur002.setStockBalance(sb.get(0) - qty);
+                pur002.setStockOrderBalance(sb.get(1));
+                pur002.setTotalWeight(pur002.getProQuantity() * silPro.getProWeight());
+                pur002.setLatestPrice(silverPurchaseService.findLatestPriceByCus(purCusCode, purProCodeS));
+                if ("W".equals(purPriceType)) {
+                    pur002.setPrice(silPro.getProPriceW());
+                } else {
+                    pur002.setPrice(silPro.getProPriceR());
+                }
+                pur002.setAmount(pur002.getProQuantity() * pur002.getPrice());
+                dataList.add(pur002);
+            }
+            summary();
+            purProCodeS = "";
+            quantity = 1;
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void find() throws Exception {
+    }
+
+    public void calAmount() throws Exception {
+        String METHOD_NAME = "calAmount";
+        try {
+            //LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            for (int i = 0; i < dataList.size(); i++) {
+                PUR002Controller pur002 = (PUR002Controller) dataList.get(i);
+                pur002.setAmount(pur002.getProQuantity() * NumberUtil.getDouble(pur002.getPrice()));
+            }
+            summary();
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    public void summary() throws Exception {
+        String METHOD_NAME = "summary";
+        try {
+            //LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            purTotalQuantity = 0;
+            purTotalAmount = 0.0;
+            purSubTotal = 0.0;
+            purGrandTotal = 0.0;
+            seq = 1;
+            for (int i = 0; i < dataList.size(); i++) {
+                PUR002Controller pur002 = (PUR002Controller) dataList.get(i);
+                pur002.setSeq(seq++);
+                purTotalQuantity = purTotalQuantity + pur002.getProQuantity();
+                purTotalAmount = purTotalAmount + pur002.getAmount();
+            }
+            purSubTotal = purTotalAmount - NumberUtil.getDouble(purDiscount);
+            purGrandTotal = purSubTotal;
+            if (checkVat) {
+                purVat = (purGrandTotal * Constants.VAT_VALUE);
+                purGrandTotal = purGrandTotal + purVat;
+            } else {
+                purVat = 0.0;
+            }
+            calDeposit();
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    public void calDeposit() throws Exception {
+        String METHOD_NAME = "calDeposit";
+        try {
+            //LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            purBalance = NumberUtil.getDouble(purGrandTotal) - NumberUtil.getDouble(purDeposit);
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    public void calReceiveMoney() throws Exception {
+        String METHOD_NAME = "calReceiveMoney";
+        try {
+            //LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            purReturnChange = NumberUtil.getDouble(purReceiveMoney) - purGrandTotal;
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void findAll() throws Exception {
+    }
+
+    @Override
+    public void delete() throws Exception {
+        String METHOD_NAME = "delete";
+        try {
+            LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            for (int i = dataList.size() - 1; i >= 0; i--) {
+                PUR002Controller pur002 = (PUR002Controller) dataList.get(i);
+                if (pur002.isCheck()) {
+                    dataList.remove(pur002);
+                }
+            }
+            summary();
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2001", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void update() throws Exception {
+        String METHOD_NAME = "update";
+        try {
+            LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            SilverPurchase inOjb = new SilverPurchase();
+            purCode = silverService.genCodeByCodeType(Constants.SILVER_GEN_CODE_TYPE_PUR_CODE);
+            purPreorderNo = silverService.genCodeByCodeType(Constants.SILVER_GEN_CODE_TYPE_PREORDER_NO);
+            purDate = DateTimeUtil.currentDate();
+            inOjb.setPurCode(purCode);
+            inOjb.setPurInvoiceNo("");
+            inOjb.setPurDate(purDate);
+            inOjb.setPurDeliveryType("F");
+            inOjb.setPurPreorderNo(purPreorderNo);
+            SilverGenCustomer silverGenCustomer = silverService.findSilverGenCustomer(StringUtil.getIsNull(purCusCode));
+            if (StringUtil.isNotNullOrNotEmpty(silverGenCustomer)) {
+                silverGenCustomer.setCusName(cusName);
+                silverGenCustomer.setCusAddress(cusAddress);
+                silverGenCustomer.setCusTelephone(cusTel);
+                silverGenCustomer.setCusFax(cusFax);
+                silverGenCustomer.setCusEmail(cusEmail);
+                silverService.editSilverGenCustomer(silverGenCustomer);
+            }
+            inOjb.setPurPriceType(purPriceType);
+            inOjb.setPurCusCode(purCusCode);
+            inOjb.setPurCusName(cusName);
+            inOjb.setPurCusAddress(cusAddress);
+            inOjb.setPurCusTelephone(cusTel);
+            inOjb.setPurCusFax(cusFax);
+            inOjb.setPurCusEmail(cusEmail);
+            inOjb.setPurTotalQuantity(purTotalQuantity);
+            if (checkVat) {
+                inOjb.setPurVatType("T");
+                inOjb.setPurVatValue(purVat);
+            } else {
+                inOjb.setPurVatType("F");
+                inOjb.setPurVatValue(0.0);
+            }
+            inOjb.setPurTotalAmount(purTotalAmount);
+            inOjb.setPurDiscount(purDiscount);
+            inOjb.setPurSubTotal(purSubTotal);
+            inOjb.setPurGrandTotal(purGrandTotal);
+            inOjb.setPurDeposit(purDeposit);
+            inOjb.setPurBalance(purBalance);
+            inOjb.setPurReceiveMoney(purReceiveMoney);
+            inOjb.setPurRetureChange(purReturnChange);
+            inOjb.setPurUser(sales);
+            inOjb.setPurRemark(purRemark);
+            inOjb.setPurFlagDelete(0);
+            inOjb.setCreatedBy(userInfo.getUsername());
+            inOjb.setCreatedDt(DateTimeUtil.currentDate());
+            inOjb.setRevisedBy(userInfo.getUsername());
+            inOjb.setRevisedDt(DateTimeUtil.currentDate());
+            List<SilverPurchaseDetail> list = new ArrayList<SilverPurchaseDetail>();
+            for (int i = 0; i < dataList.size(); i++) {
+                PUR002Controller pur002 = (PUR002Controller) dataList.get(i);
+                SilverPurchaseDetail detail = new SilverPurchaseDetail();
+                detail.setPurCode(inOjb);
+                detail.setPurProCode(pur002.getSilverProducts());
+                detail.setPurProQuantity(pur002.getProQuantity());
+                detail.setPurTotalWeight(pur002.getTotalWeight());
+                detail.setPurProLaterstPrice(pur002.getLatestPrice());
+                detail.setPurProPrice(pur002.getPrice());
+                detail.setPurAmount(pur002.getAmount());
+                list.add(detail);
+            }
+            inOjb.setSilverPurchaseDetailList(list);
+            silverPurchaseService.createSilverPurchase(inOjb);
+            navigationController.nextPage("pur/pur002_result", "pur002Controller.cancel()");
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2001", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void cancel() throws Exception {
+    }
+
+    @Override
+    public void reportPDF() throws Exception {
+        String METHOD_NAME = "reportPDF";
+        try {
+            LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            ReportUtil reportUtil = new ReportUtil();
+            Collection reportList = new ArrayList();
+            HashMap parameter = new HashMap();
+
+            SilverPurchase sp = silverPurchaseService.findSilverPurchase(purCode);
+            if (sp.getSilverPurchaseDetailList().size() > 0) {
+                for (int i = 0; i < sp.getSilverPurchaseDetailList().size(); i++) {
+                    SilverPurchaseDetail detail = (SilverPurchaseDetail) sp.getSilverPurchaseDetailList().get(i);
+                    PUR002ReportBean pur002ReportBean = new PUR002ReportBean();
+                    pur002ReportBean.setSeq(String.valueOf(i + 1));
+                    pur002ReportBean.setProCode(detail.getPurProCode().getProCode());
+                    pur002ReportBean.setProDetail(detail.getPurProCode().getProCategories().getCode() + "/" + detail.getPurProCode().getProType().getCode());
+                    pur002ReportBean.setProQty(StringUtil.numberFormat(detail.getPurProQuantity(), "#,##0"));
+                    pur002ReportBean.setProUnitPrice(StringUtil.numberFormat(detail.getPurProPrice(), "#,##0.00"));
+                    pur002ReportBean.setProTotalWeight(StringUtil.numberFormat(detail.getPurTotalWeight(), "#,##0.00"));
+                    pur002ReportBean.setProAmount(StringUtil.numberFormat(detail.getPurAmount(), "#,##0.00"));
+                    reportList.add(pur002ReportBean);
+                }
+            }
+            int rows;
+            if ("T".equals(sp.getPurVatType())) {
+                rows = ReportConstant.PUR002S1_ROWS;
+            } else {
+                rows = ReportConstant.PUR002S2_ROWS;
+            }
+            if (reportList.size() < rows) {
+                for (int i = reportList.size(); i < rows; i++) {
+                    PUR002ReportBean pur002ReportBean = new PUR002ReportBean();
+                    pur002ReportBean.setSeq("");
+                    pur002ReportBean.setProCode("");
+                    pur002ReportBean.setProDetail("");
+                    pur002ReportBean.setProQty("");
+                    pur002ReportBean.setProUnitPrice("");
+                    pur002ReportBean.setProTotalWeight("");
+                    pur002ReportBean.setProAmount("");
+                    reportList.add(pur002ReportBean);
+                }
+            }
+            parameter.put(ReportConstant.PUR_INVOICE_NO, StringUtil.getIsNull(sp.getPurInvoiceNo()));
+            parameter.put(ReportConstant.PUR_PREORDER_NO, StringUtil.getIsNull(sp.getPurPreorderNo()));
+            parameter.put(ReportConstant.PUR_DATE, DateTimeUtil.dateToString(sp.getPurDate(), "dd/MM/yyyy HH:mm"));
+            parameter.put(ReportConstant.PUR_USER, StringUtil.getIsNull(sp.getPurUser()));
+            parameter.put(ReportConstant.PUR_CUS_CODE, StringUtil.getIsNull(sp.getPurCusCode()));
+            parameter.put(ReportConstant.PUR_CUS_NAME, StringUtil.getIsNull(sp.getPurCusName()));
+            parameter.put(ReportConstant.PUR_CUS_ADDRESS, StringUtil.getIsNull(sp.getPurCusAddress()));
+            parameter.put(ReportConstant.PUR_CUS_TELEPHONE, StringUtil.getIsNull(sp.getPurCusTelephone()));
+            parameter.put(ReportConstant.PUR_CUS_FAX, StringUtil.getIsNull(sp.getPurCusFax()));
+            parameter.put(ReportConstant.PUR_CUS_EMAIL, StringUtil.getIsNull(sp.getPurCusEmail()));
+            parameter.put(ReportConstant.PUR_REMARK, StringUtil.getIsNull(sp.getPurRemark()));
+
+            parameter.put(ReportConstant.PUR_TOTAL_QTY, StringUtil.numberFormat(sp.getPurTotalQuantity(), "#,##0"));
+            parameter.put(ReportConstant.PUR_TOTAL_AMOUNT, StringUtil.numberFormat(sp.getPurTotalAmount(), "#,##0.00"));
+            parameter.put(ReportConstant.PUR_DISCOUNT, StringUtil.numberFormat(sp.getPurDiscount(), "#,##0.00"));
+            parameter.put(ReportConstant.PUR_SUB_TOTAL, StringUtil.numberFormat(sp.getPurSubTotal(), "#,##0.00"));
+            if ("T".equals(sp.getPurVatType())) {
+                parameter.put(ReportConstant.PUR_TOTAL_VAT, StringUtil.numberFormat(sp.getPurVatValue(), "#,##0.00"));
+            } else {
+                parameter.put(ReportConstant.PUR_TOTAL_VAT, StringUtil.numberFormat(0, "#,##0.00"));
+            }
+            parameter.put(ReportConstant.PUR_GRAND_TOTAL, StringUtil.numberFormat(sp.getPurGrandTotal(), "#,##0.00"));
+            parameter.put(ReportConstant.PUR_DEPOSIT, StringUtil.numberFormat(sp.getPurDeposit(), "#,##0.00"));
+            parameter.put(ReportConstant.PUR_BALANCE, StringUtil.numberFormat(sp.getPurBalance(), "#,##0.00"));
+            parameter.put(ReportConstant.PUR_RECEIVE_MONEY, StringUtil.numberFormat(sp.getPurReceiveMoney(), "#,##0.00"));
+            parameter.put(ReportConstant.PUR_RETURE_CHANGE, StringUtil.numberFormat(sp.getPurRetureChange(), "#,##0.00"));
+            if ("T".equals(sp.getPurVatType())) {
+                reportUtil.export(ReportConstant.PUR002S1_JASPER, ReportConstant.PUR002S1_CODE, parameter, reportList);
+            } else {
+                reportUtil.export(ReportConstant.PUR002S2_JASPER, ReportConstant.PUR002S2_CODE, parameter, reportList);
+            }
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2001", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void reportExcel() throws Exception {
+    }
+
+    public void selectAll() {
+        for (int i = 0; i < dataList.size(); i++) {
+            PUR002Controller pur002Controller = (PUR002Controller) dataList.get(i);
+            pur002Controller.setCheck(check);
+        }
+    }
+
+    public void searchProCusCode() {
+        String METHOD_NAME = "searchProCusCode";
+        try {
+            List<SelectedData> list = new ArrayList<SelectedData>();
+            List<SilverGenCustomer> cusList = silverService.findSilverGenCustomerAll();
+            for (int i = 0; i < cusList.size(); i++) {
+                SilverGenCustomer sc = (SilverGenCustomer) cusList.get(i);
+                list.add(new SelectedData(sc.getCusCode(), sc.getCusName(), "", true));
+            }
+            proCusList = new SelectedDataModel(list);
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2001", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    public void onRowSelectProCusCode() {
+        String METHOD_NAME = "onRowSelectProCusCode";
+        try {
+            purCusCode = selectProCus.getValue();
+            SilverGenCustomer silCus = silverService.findSilverGenCustomer(purCusCode);
+            if (StringUtil.isNotNullOrNotEmpty(silCus)) {
+                cusName = silCus.getCusName();
+                cusAddress = silCus.getCusAddress();
+                cusTel = silCus.getCusTelephone();
+                cusFax = silCus.getCusFax();
+                cusEmail = silCus.getCusEmail();
+            }
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2001", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    public String getPurCode() {
+        return purCode;
+    }
+
+    public void setPurCode(String purCode) {
+        this.purCode = purCode;
+    }
+
+    public String getPurInvoiceNo() {
+        return purInvoiceNo;
+    }
+
+    public void setPurInvoiceNo(String purInvoiceNo) {
+        this.purInvoiceNo = purInvoiceNo;
+    }
+
+    public Date getPurDate() {
+        return purDate;
+    }
+
+    public void setPurDate(Date purDate) {
+        this.purDate = purDate;
+    }
+
+    public Integer getPurTotalQuantity() {
+        return purTotalQuantity;
+    }
+
+    public void setPurTotalQuantity(Integer purTotalQuantity) {
+        this.purTotalQuantity = purTotalQuantity;
+    }
+
+    public boolean isCheckVat() {
+        return checkVat;
+    }
+
+    public void setCheckVat(boolean checkVat) {
+        this.checkVat = checkVat;
+    }
+
+    public Double getPurVat() {
+        return purVat;
+    }
+
+    public void setPurVat(Double purVat) {
+        this.purVat = purVat;
+    }
+
+    public Double getPurTotalAmount() {
+        return purTotalAmount;
+    }
+
+    public void setPurTotalAmount(Double purTotalAmount) {
+        this.purTotalAmount = purTotalAmount;
+    }
+
+    public Double getPurDiscount() {
+        return purDiscount;
+    }
+
+    public void setPurDiscount(Double purDiscount) {
+        this.purDiscount = purDiscount;
+    }
+
+    public Double getPurGrandTotal() {
+        return purGrandTotal;
+    }
+
+    public void setPurGrandTotal(Double purGrandTotal) {
+        this.purGrandTotal = purGrandTotal;
+    }
+
+    public Double getPurReceiveMoney() {
+        return purReceiveMoney;
+    }
+
+    public void setPurReceiveMoney(Double purReceiveMoney) {
+        this.purReceiveMoney = purReceiveMoney;
+    }
+
+    public Double getPurReturnChange() {
+        return purReturnChange;
+    }
+
+    public void setPurReturnChange(Double purReturnChange) {
+        this.purReturnChange = purReturnChange;
+    }
+
+    public String getSales() {
+        return sales;
+    }
+
+    public void setSales(String sales) {
+        this.sales = sales;
+    }
+
+    public String getPurRemark() {
+        return purRemark;
+    }
+
+    public void setPurRemark(String purRemark) {
+        this.purRemark = purRemark;
+    }
+
+    public String getPurProCodeS() {
+        return purProCodeS;
+    }
+
+    public void setPurProCodeS(String purProCodeS) {
+        this.purProCodeS = purProCodeS;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public List<PUR002Controller> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<PUR002Controller> dataList) {
+        this.dataList = dataList;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public Integer getProQuantity() {
+        return proQuantity;
+    }
+
+    public void setProQuantity(Integer proQuantity) {
+        this.proQuantity = proQuantity;
+    }
+
+    public Integer getStockBalance() {
+        return stockBalance;
+    }
+
+    public void setStockBalance(Integer stockBalance) {
+        this.stockBalance = stockBalance;
+    }
+
+    public Integer getStockOrderBalance() {
+        return stockOrderBalance;
+    }
+
+    public void setStockOrderBalance(Integer stockOrderBalance) {
+        this.stockOrderBalance = stockOrderBalance;
+    }
+
+    public Double getTotalWeight() {
+        return totalWeight;
+    }
+
+    public void setTotalWeight(Double totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public SilverProducts getSilverProducts() {
+        return silverProducts;
+    }
+
+    public void setSilverProducts(SilverProducts silverProducts) {
+        this.silverProducts = silverProducts;
+    }
+
+    public String getPurCusCode() {
+        return purCusCode;
+    }
+
+    public void setPurCusCode(String purCusCode) {
+        this.purCusCode = purCusCode;
+    }
+
+    public String getCusName() {
+        return cusName;
+    }
+
+    public void setCusName(String cusName) {
+        this.cusName = cusName;
+    }
+
+    public String getCusAddress() {
+        return cusAddress;
+    }
+
+    public void setCusAddress(String cusAddress) {
+        this.cusAddress = cusAddress;
+    }
+
+    public String getCusTel() {
+        return cusTel;
+    }
+
+    public void setCusTel(String cusTel) {
+        this.cusTel = cusTel;
+    }
+
+    public String getCusFax() {
+        return cusFax;
+    }
+
+    public void setCusFax(String cusFax) {
+        this.cusFax = cusFax;
+    }
+
+    public String getCusEmail() {
+        return cusEmail;
+    }
+
+    public void setCusEmail(String cusEmail) {
+        this.cusEmail = cusEmail;
+    }
+
+    public String getProCusSearch() {
+        return proCusSearch;
+    }
+
+    public void setProCusSearch(String proCusSearch) {
+        this.proCusSearch = proCusSearch;
+    }
+
+    public SelectedDataModel getProCusList() {
+        return proCusList;
+    }
+
+    public void setProCusList(SelectedDataModel proCusList) {
+        this.proCusList = proCusList;
+    }
+
+    public SelectedData getSelectProCus() {
+        return selectProCus;
+    }
+
+    public void setSelectProCus(SelectedData selectProCus) {
+        this.selectProCus = selectProCus;
+    }
+
+    public Double getLatestPrice() {
+        return latestPrice;
+    }
+
+    public void setLatestPrice(Double latestPrice) {
+        this.latestPrice = latestPrice;
+    }
+
+    public String getPurPreorderNo() {
+        return purPreorderNo;
+    }
+
+    public void setPurPreorderNo(String purPreorderNo) {
+        this.purPreorderNo = purPreorderNo;
+    }
+
+    public Double getPurDeposit() {
+        return purDeposit;
+    }
+
+    public void setPurDeposit(Double purDeposit) {
+        this.purDeposit = purDeposit;
+    }
+
+    public Double getPurBalance() {
+        return purBalance;
+    }
+
+    public void setPurBalance(Double purBalance) {
+        this.purBalance = purBalance;
+    }
+
+    public Double getPurSubTotal() {
+        return purSubTotal;
+    }
+
+    public void setPurSubTotal(Double purSubTotal) {
+        this.purSubTotal = purSubTotal;
+    }
+
+    public String getPurPriceType() {
+        return purPriceType;
+    }
+
+    public void setPurPriceType(String purPriceType) {
+        this.purPriceType = purPriceType;
+    }
+}

@@ -1,0 +1,43 @@
+package com.sscs.kdb.common.util;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import javax.faces.context.FacesContext;
+
+/**
+ * @author Mr.Aekasit Sengnualnim (Aek) Developer
+ *
+ * SSC Solutions Co., Ltd. 333 Lao Peng Nguan Tower 1, 27th A Floor,
+ * Viphavadee-Rangsit Road, Jomphol, Jatujak, Bangkok 10900 Thailand Tel :+66
+ * (0) 2618 8638-9 Fax :+66 (0) 2618 8640 Mobile : +66 8912 90006 Skype :
+ * s.aekasit Email : aekasit@sscs.co.th MSN : s.aekasit@hotmail.com
+ * http://www.sscs.co.th/
+ *
+ * @create 14-05-2012 12:42:37 AM
+ */
+public class LoaderConfig {
+
+    public static final String MESSAGE_PATH = "resources.config";
+    private static HashMap messageBundles = new HashMap();
+
+    public static String getConfig(String key) {
+        if (key == null) {
+            return null;
+        }
+
+        try {
+            Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+
+            ResourceBundle messages = (ResourceBundle) messageBundles.get(locale.toString());
+
+            if (messages == null) {
+                messages = ResourceBundle.getBundle(MESSAGE_PATH, locale);
+                messageBundles.put(locale.toString(), messages);
+            }
+            return messages.getString(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+}

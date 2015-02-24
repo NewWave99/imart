@@ -1,0 +1,58 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="ฐานข้อมูลโครงการ" actionListener="#{navigationController.nextPage('promain/main001')}" update="@(form)" global="false"/>
+        <p:menuitem value="เพิ่มข้อมูลโครงการ" disabled="true"/>
+    </p:breadCrumb>
+    <p:focus context="content-layout"/>  
+    <p:panel id="content-layout" styleClass="margin">
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 20%;"></td>
+                <td style="width: 5%"></td>
+                <td style="width: 75%"></td>
+            </tr>
+            <tr>
+                <td style="text-align: right">
+                    <h:outputText value="ชื่อโครงการ" styleClass="lbl_bold"/>
+                </td>
+                <td ></td>
+                <td >
+                    <p:inputText value="#{promain001Controller.projectName}" style="width: 300px;" />
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right">
+                    <h:outputText value="รายละเอียดโครงการ" styleClass="lbl_bold" />
+                </td>
+                <td ></td>
+                <td >
+                    <p:inputTextarea value="#{promain001Controller.projectDescription}" rows="5" cols="50"/>
+                </td>
+            </tr>
+           
+            <tr>
+                <td style="text-align: right"></td>
+                <td ></td>
+                <td >
+                    <br/>
+                    <h:panelGroup style="text-align: left;">
+                        <p:commandButton value="#{msg['btn.save']}" icon="icon-save" action="#{promain001Controller.update()}" update="@(form)"/>
+                        <p:commandButton value="#{msg['btn.cancel']}" icon="icon-cancel" action="#{navigationController.nextPage('promain/main001')}" update="@(form)"/>
+                    </h:panelGroup> 
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: right"></td>
+                <td ></td>
+                <td >
+                    <br/>
+                </td>
+            </tr>
+        </table>
+    </p:panel>
+</ui:composition>

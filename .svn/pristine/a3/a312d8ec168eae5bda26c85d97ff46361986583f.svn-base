@@ -1,0 +1,45 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.service;
+
+import com.sscs.kdb.entity.AuthLog;
+import com.sscs.kdb.entity.AuthRole;
+import com.sscs.kdb.entity.AuthUser;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Administrator
+ */
+@Local
+public interface UserService {
+
+    void createAuthUser(AuthUser authUser) throws Exception;
+    
+    void createAuthLog(AuthLog authLog) throws Exception;
+
+    void editAuthUser(AuthUser authUser) throws Exception;
+
+    void editPassword(AuthUser authUser) throws Exception;
+
+    void editLocale(AuthUser authUser) throws Exception;
+
+    void editTheme(AuthUser authUser) throws Exception;
+
+    void removeAuthUser(AuthUser authUser) throws Exception;
+
+    void updateStatus(AuthUser authUser) throws Exception;
+
+    AuthUser findAuthUser(Object id) throws Exception;
+
+    AuthUser findAuthUserByUsername(String username) throws Exception;
+
+    List<AuthUser> findAuthUserAll() throws Exception;
+
+    List<AuthUser> findAuthUserByStatus() throws Exception;
+
+    List<AuthRole> findAuthRoleAll() throws Exception;
+}

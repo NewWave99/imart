@@ -1,0 +1,47 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.common.util.StringUtil;
+import com.sscs.kdb.entity.Extorg;
+import java.util.List;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+/**
+ *
+ * @author Administrator
+ */
+@Stateless
+public class ExtorgDAO extends AbstractFacade<Extorg> implements ExtorgDAOLocal {
+
+    @PersistenceContext(unitName = "kdb-warPU")
+    private EntityManager em;
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public ExtorgDAO() {
+        super(Extorg.class);
+    }
+
+    @Override
+    public List<Extorg> findByPK(Extorg extorg) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select o from Extorg o where 1=1 ");
+        if (StringUtil.isNotNullOrNotEmpty(extorg.getOrgTypeID())) {
+            sb.append("and o.orgTypeID = '").append(extorg.getOrgTypeID().getOrgTypeID()).append("' ");
+        }
+        if (StringUtil.isNotNullOrNotEmpty(extorg.getCompanyNameTH())) {
+            sb.append("and o.companyNameTH = '").append(extorg.getCompanyNameTH()).append("' ");
+        }
+        Query q = em.createQuery(sb.toString());
+        return q.getResultList();
+    }
+}

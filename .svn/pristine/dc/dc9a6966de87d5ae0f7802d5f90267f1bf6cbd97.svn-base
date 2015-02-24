@@ -1,0 +1,152 @@
+package com.sscs.kdb.common.util;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.krysalis.barcode4j.impl.code128.Code128Bean;
+import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
+import org.krysalis.barcode4j.tools.UnitConv;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+
+public class UploadUtil {
+
+    public static String SILVER_TYPE = "silver";
+    public static String LATHER_TYPE = "lather";
+
+    public static String getFilePath(String urlPath) {
+        String reName = "";
+        try {
+            String imagesPatch = MsgBundleLoader.getConfigProperties("imagesPatch");
+            if (urlPath != null && urlPath.length() != 0) {
+                reName = imagesPatch.concat(urlPath);
+            } else {
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return reName;
+    }
+
+    public static String getFileNameShow(String urlPath) {
+        String reName = "";
+        try {
+            if (urlPath != null && urlPath.length() != 0) {
+                String[] fnames = urlPath.split("//");
+                if (fnames.length > 0) {
+                    reName = fnames[fnames.length - 1];
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return reName;
+    }
+
+    public static String getFileName(UploadedFile files, String fileName) {
+        String reName = "";
+        try {
+            String deName = files.getFileName();
+            String extension = deName.substring(deName.length() - 3, deName.length());
+            if (fileName != null && fileName.length() != 0) {
+                reName = fileName.concat(".").concat(extension.toLowerCase());
+            } else {
+                reName = deName;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return reName;
+    }
+
+    public static StreamedContent getFile(String urlPath, String fileName) {
+        StreamedContent file = null;
+        try {
+            if (urlPath != null && urlPath.length() > 0) {
+                String imagesPatch = MsgBundleLoader.getConfigProperties("imagesPatch");
+                URL url = new URL(imagesPatch.concat(urlPath));
+                URLConnection uc = url.openConnection();
+                file = new DefaultStreamedContent(uc.getInputStream(), uc.getContentType(), fileName);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return file;
+    }
+
+    public static String uploadFile(UploadedFile files, String folder, String subFolder, String fileName) {
+        String realPath = null;
+        try {
+            String imagesDir = MsgBundleLoader.getConfigProperties("imagesDir");
+            String sFileName = getFileName(files, fileName);
+            if (subFolder != null && subFolder.length() != 0) {
+                folder = folder.concat("//").concat(subFolder);
+            }
+            if (!(new File(imagesDir.concat("//").concat(folder))).exists()) {
+                new File(imagesDir.concat("//").concat(folder)).mkdirs();
+            }
+            realPath = folder.concat("//").concat(sFileName);
+            InputStream in = files.getInputstream();
+            OutputStream out = new FileOutputStream(new File(imagesDir.concat("//").concat(realPath)));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            while ((read = in.read(bytes)) != -1) {
+                out.write(bytes, 0, read);
+            }
+            in.close();
+            out.flush();
+            out.close();
+        } catch (IOException ioex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ioex);
+        } catch (Exception ex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return realPath;
+    }
+
+    public static void genBarCode128(String data) {
+        try {
+            String barcodeDir = MsgBundleLoader.getConfigProperties("barcodeDir");
+            Code128Bean bean = new Code128Bean();
+            final int dpi = 200;
+            bean.setModuleWidth(UnitConv.in2mm(2.0f / dpi)); // makes the narrow
+            bean.doQuietZone(false);
+            bean.setFontName("SansSerif");
+            bean.setFontSize(5);
+            File outputFile = new File(barcodeDir + data + ".jpg");
+            OutputStream out = new FileOutputStream(outputFile);
+            try {
+                BitmapCanvasProvider canvas = new BitmapCanvasProvider(out,
+                        "image/jpeg", dpi, BufferedImage.TYPE_BYTE_BINARY,
+                        false, 0);
+                bean.generateBarcode(canvas, data);
+                canvas.finish();
+            } finally {
+                out.close();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static String genPathBarCode128(String data) {
+        String realPath = null;
+        try {
+            String barcodePatch = MsgBundleLoader.getConfigProperties("barcodePatch");
+            if (StringUtil.isNotNullOrNotEmpty(data)) {
+                realPath = barcodePatch.concat("/").concat(data).concat(".jpg");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UploadUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return realPath;
+    }
+}

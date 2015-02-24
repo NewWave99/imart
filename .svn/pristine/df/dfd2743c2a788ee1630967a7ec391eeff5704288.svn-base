@@ -1,0 +1,191 @@
+package com.sscs.kdb.common.util;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.util.CellRangeAddress;
+
+public class ExcelUtil {
+
+    private FacesContext context;
+    private ServletContext servletContext;
+    public static final String PREFIX = ".xls";
+    public static final String EXCEL_PATH = "/resources/excel-form/";
+
+    public static void main(String[] args) {
+    }
+
+    public void exportByTemplate(String excelName, String excelTemplate, List<ExcelBean> parameter, int rowStart, int col, String[][] row) {
+        try {
+            context = FacesContext.getCurrentInstance();
+            servletContext = (ServletContext) context.getExternalContext().getContext();
+            String realPath = servletContext.getRealPath(EXCEL_PATH.concat(excelTemplate).concat(PREFIX));
+            POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(realPath));
+            HSSFWorkbook wb = new HSSFWorkbook(fs, true);
+            wb.setSheetName(0, excelName.concat("_Sheet"));
+            HSSFSheet sheet = wb.getSheetAt(0);
+
+            //parameter
+            for (int i = 0; i < parameter.size(); i++) {
+                ExcelBean eb = (ExcelBean) parameter.get(i);
+                HSSFRow rowCode = sheet.getRow(eb.getRow());
+                HSSFCell cellCode = rowCode.getCell(eb.getCol());
+                cellCode.setCellType(HSSFCell.CELL_TYPE_STRING);
+                cellCode.setCellValue(eb.getDataValue());
+            }
+
+            int r = rowStart;
+            for (int i = 0; i < row.length; i++) {
+                HSSFRow hSSFRow = sheet.createRow(r);
+                for (int j = 0; j < col; j++) {
+                    String check = row[i][j].substring(0, 6);
+                    String data = row[i][j].substring(6, row[i][j].length());
+                    if (!data.equals("null") && data.trim().length() != 0) {
+                        HSSFCell hSSFCell = hSSFRow.createCell(j);
+                        if (check.equals("Number")) {
+                            hSSFCell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                            hSSFCell.setCellValue(Double.parseDouble(data));
+                        } else {
+                            hSSFCell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                            hSSFCell.setCellValue(data);
+                        }
+                    }
+                }
+                r++;
+            }
+            excelName = excelName.concat("-").concat(DateTimeUtil.dateToString(DateTimeUtil.currentDate(), "yyyyMMddHHmmss"));
+            context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            externalContext.setResponseContentType("application/vnd.ms-excel");
+            externalContext.setResponseHeader("Content-Disposition", "attachment; filename=" + excelName + PREFIX);
+            wb.write(externalContext.getResponseOutputStream());
+            context.getApplication().getStateManager().saveView(context);
+            context.responseComplete();
+        } catch (IOException ex) {
+            Logger.getLogger(ExcelUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void export(String excelName, String[] headcol, String[] merge, String[] col, String[][] row) {
+        try {
+            int r = 0;
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet hSSFSheet = workbook.createSheet(excelName + "_Sheet");
+
+            //header
+            HSSFCellStyle hStyle = workbook.createCellStyle();
+            HSSFFont hFont = workbook.createFont();
+            hFont.setFontName("Tahoma");
+            hFont.setFontHeightInPoints((short) 10);
+            hFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            hStyle.setFont(hFont);
+            hStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            hStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            hStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            //col
+            HSSFCellStyle cStyle = workbook.createCellStyle();
+            HSSFFont cFont = workbook.createFont();
+            cFont.setFontName("Tahoma");
+            cFont.setFontHeightInPoints((short) 9);
+            cFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+            cStyle.setFont(cFont);
+            cStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            cStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+            cStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            //detail
+            HSSFCellStyle dStyle = workbook.createCellStyle();
+            HSSFFont dFont = workbook.createFont();
+            dFont.setFontName("Tahoma");
+            dFont.setFontHeightInPoints((short) 9);
+            dStyle.setFont(dFont);
+
+            if (headcol.length != 0) {
+                HSSFRow hSSFRow = hSSFSheet.createRow(r);
+                for (int j = 0; j < headcol.length; j++) {
+                    HSSFCell hSSFCell = hSSFRow.createCell(j);
+                    hSSFCell.setCellStyle(hStyle);
+                    hSSFCell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                    hSSFCell.setCellValue(headcol[j]);
+                }
+                if (merge.length != 0) {
+                    for (int i = 0; i < merge.length; i++) {
+                        String m[] = merge[i].split("/");
+                        hSSFSheet.addMergedRegion(new CellRangeAddress(r, (short) Integer.valueOf(m[0]).intValue(), 0, (short) Integer.valueOf(m[1]).intValue()));
+                    }
+                }
+                r++;
+            }
+            if (col.length != 0) {
+                HSSFRow hSSFRow = hSSFSheet.createRow(r);
+                for (int j = 0; j < col.length; j++) {
+                    HSSFCell hSSFCell = hSSFRow.createCell(j);
+                    hSSFCell.setCellStyle(cStyle);
+                    hSSFCell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                    hSSFCell.setCellValue(col[j]);
+//                    hSSFSheet.autoSizeColumn((short) j);
+//                    if (col[j].length() > 5){
+//                        hSSFSheet.setColumnWidth(j, col[j].length());
+//                    }else {
+//                        hSSFSheet.setColumnWidth(j, 5);
+//                    }
+                    //hSSFSheet.setColumnWidth(j, 10);
+                }
+                r++;
+            }
+            for (int i = 0; i < row.length; i++) {
+                HSSFRow hSSFRow = hSSFSheet.createRow(r);
+                for (int j = 0; j < col.length; j++) {
+                    String check = row[i][j].substring(0, 6);
+                    String data = row[i][j].substring(6, row[i][j].length());
+                    if (!data.equals("null") && data.trim().length() != 0) {
+                        HSSFCell hSSFCell = hSSFRow.createCell(j);
+                        hSSFCell.setCellStyle(dStyle);
+                        //hSSFSheet.autoSizeColumn((short) j);
+                        //hSSFSheet.setColumnWidth(j, col[j].length());
+                        if (check.equals("Number")) {
+                            hSSFCell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                            hSSFCell.setCellValue(Double.parseDouble(data));
+                        } else {
+                            hSSFCell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                            hSSFCell.setCellValue(data);
+                        }
+                    }
+                }
+                r++;
+            }
+
+            excelName = excelName.concat("-").concat(DateTimeUtil.dateToString(DateTimeUtil.currentDate(), "yyyyMMddHHmmss"));
+            context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            externalContext.setResponseContentType("application/vnd.ms-excel");
+            externalContext.setResponseHeader("Content-Disposition", "attachment; filename=" + excelName + PREFIX);
+
+            workbook.write(externalContext.getResponseOutputStream());
+
+            context.getApplication().getStateManager().saveView(context);
+            context.responseComplete();
+        } catch (Exception ex) {
+            Logger.getLogger(ExcelUtil.class.getName()).log(Level.SEVERE, null, ex);
+            JsfUtil.addErrorMessage(ex, ex.getMessage());
+        }
+    }
+
+    public String excelFormatString(String formatString) {
+        return "NotNum" + formatString;
+    }
+
+    public String excelFormatNumber(String formatNumber) {
+        return "Number" + formatNumber;
+    }
+}

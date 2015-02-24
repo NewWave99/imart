@@ -1,0 +1,69 @@
+package com.sscs.kdb.controller;
+
+import com.sscs.kdb.common.util.DateTimeUtil;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+@ManagedBean(name = DashboardController.BEAN_NAME)
+@SessionScoped
+public class DashboardController {
+
+    public static final String BEAN_NAME = "dashboardController";
+    private int seq;
+    private String imgPath;
+    private List<DashboardController> rankingSellers;
+    private List<DashboardController> rankingPoor;
+
+    public DashboardController() {
+    }
+
+    @PostConstruct
+    public void init() {
+        try {
+            Date dateFrom = DateTimeUtil.currentDate(60);
+            Date dateTo = DateTimeUtil.currentDate();
+            rankingSellers = new ArrayList<DashboardController>();
+            rankingPoor = new ArrayList<DashboardController>();
+        } catch (Exception ex) {
+            Logger.getLogger(DashboardController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public List<DashboardController> getRankingSellers() {
+        return rankingSellers;
+    }
+
+    public void setRankingSellers(List<DashboardController> rankingSellers) {
+        this.rankingSellers = rankingSellers;
+    }
+
+    public List<DashboardController> getRankingPoor() {
+        return rankingPoor;
+    }
+
+    public void setRankingPoor(List<DashboardController> rankingPoor) {
+        this.rankingPoor = rankingPoor;
+    }
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
+    }
+}

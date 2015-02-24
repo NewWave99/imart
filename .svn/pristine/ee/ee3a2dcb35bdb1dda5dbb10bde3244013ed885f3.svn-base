@@ -1,0 +1,12 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <div id="header-content" class="ui-state-default">
+        <h:outputText value="#{msg['menu.home']}"/>
+    </div>
+    <h:panelGroup layout="block">
+        
+    </h:panelGroup>
+</ui:composition>

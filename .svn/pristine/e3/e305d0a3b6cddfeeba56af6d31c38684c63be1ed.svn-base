@@ -1,0 +1,59 @@
+package com.sscs.kdb.reportbean;
+
+public class PRO003ReportBean {
+
+    private String proImages1;
+    private String proImages2;
+    private String proImages3;
+    private String productDesc1;
+    private String productDesc2;
+    private String productDesc3;
+
+    public String getProImages1() {
+        return proImages1;
+    }
+
+    public void setProImages1(String proImages1) {
+        this.proImages1 = proImages1;
+    }
+
+    public String getProImages2() {
+        return proImages2;
+    }
+
+    public void setProImages2(String proImages2) {
+        this.proImages2 = proImages2;
+    }
+
+    public String getProImages3() {
+        return proImages3;
+    }
+
+    public void setProImages3(String proImages3) {
+        this.proImages3 = proImages3;
+    }
+
+    public String getProductDesc1() {
+        return productDesc1;
+    }
+
+    public void setProductDesc1(String productDesc1) {
+        this.productDesc1 = productDesc1;
+    }
+
+    public String getProductDesc2() {
+        return productDesc2;
+    }
+
+    public void setProductDesc2(String productDesc2) {
+        this.productDesc2 = productDesc2;
+    }
+
+    public String getProductDesc3() {
+        return productDesc3;
+    }
+
+    public void setProductDesc3(String productDesc3) {
+        this.productDesc3 = productDesc3;
+    }
+}

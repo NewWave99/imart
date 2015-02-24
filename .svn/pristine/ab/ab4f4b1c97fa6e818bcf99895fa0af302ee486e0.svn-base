@@ -1,0 +1,168 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "projectresource")
+@NamedQueries({
+    @NamedQuery(name = "Projectresource.findAll", query = "SELECT p FROM Projectresource p")})
+public class Projectresource implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "ResourceID")
+    private String resourceID;
+    @Size(max = 25)
+    @Column(name = "ProjectID")
+    private String projectID;
+    @Column(name = "StartDate")
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+    @Column(name = "EndDate")
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
+    @Size(max = 25)
+    @Column(name = "CreateBy")
+    private String createBy;
+    @Size(max = 25)
+    @Column(name = "ModifyBy")
+    private String modifyBy;
+    @Column(name = "LastModified")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified;
+    @JoinColumn(name = "ProjectPosID", referencedColumnName = "ProjectPosID")
+    @ManyToOne
+    private Mainprojectpos projectPosID;
+    @JoinColumn(name = "ConsultID", referencedColumnName = "ConsultID")
+    @ManyToOne
+    private Consultant consultID;
+
+    public Projectresource() {
+    }
+
+    public Projectresource(String resourceID) {
+        this.resourceID = resourceID;
+    }
+
+    public String getResourceID() {
+        return resourceID;
+    }
+
+    public void setResourceID(String resourceID) {
+        this.resourceID = resourceID;
+    }
+
+    public String getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getModifyBy() {
+        return modifyBy;
+    }
+
+    public void setModifyBy(String modifyBy) {
+        this.modifyBy = modifyBy;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Mainprojectpos getProjectPosID() {
+        return projectPosID;
+    }
+
+    public void setProjectPosID(Mainprojectpos projectPosID) {
+        this.projectPosID = projectPosID;
+    }
+
+    public Consultant getConsultID() {
+        return consultID;
+    }
+
+    public void setConsultID(Consultant consultID) {
+        this.consultID = consultID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (resourceID != null ? resourceID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Projectresource)) {
+            return false;
+        }
+        Projectresource other = (Projectresource) object;
+        if ((this.resourceID == null && other.resourceID != null) || (this.resourceID != null && !this.resourceID.equals(other.resourceID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.Projectresource[ resourceID=" + resourceID + " ]";
+    }
+    
+}

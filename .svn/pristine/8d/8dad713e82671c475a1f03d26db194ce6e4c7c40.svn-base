@@ -1,0 +1,84 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Embeddable
+public class ExtorgsectorPK implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "ExtConID")
+    private String extConID;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "SectorID")
+    private String sectorID;
+
+    public ExtorgsectorPK() {
+    }
+
+    public ExtorgsectorPK(String extConID, String sectorID) {
+        this.extConID = extConID;
+        this.sectorID = sectorID;
+    }
+
+    public String getExtConID() {
+        return extConID;
+    }
+
+    public void setExtConID(String extConID) {
+        this.extConID = extConID;
+    }
+
+    public String getSectorID() {
+        return sectorID;
+    }
+
+    public void setSectorID(String sectorID) {
+        this.sectorID = sectorID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (extConID != null ? extConID.hashCode() : 0);
+        hash += (sectorID != null ? sectorID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ExtorgsectorPK)) {
+            return false;
+        }
+        ExtorgsectorPK other = (ExtorgsectorPK) object;
+        if ((this.extConID == null && other.extConID != null) || (this.extConID != null && !this.extConID.equals(other.extConID))) {
+            return false;
+        }
+        if ((this.sectorID == null && other.sectorID != null) || (this.sectorID != null && !this.sectorID.equals(other.sectorID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.ExtorgsectorPK[ extConID=" + extConID + ", sectorID=" + sectorID + " ]";
+    }
+    
+}

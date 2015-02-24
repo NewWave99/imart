@@ -1,0 +1,664 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.controller.promain;
+
+import com.sscs.kdb.controller.user.*;
+import com.sscs.kdb.common.util.DateTimeUtil;
+import com.sscs.kdb.common.util.ExceptionUtil;
+import com.sscs.kdb.common.util.JsfUtil;
+import com.sscs.kdb.common.util.MD5Generator;
+import com.sscs.kdb.common.util.MsgBundleLoader;
+import com.sscs.kdb.common.util.StringUtil;
+import com.sscs.kdb.controller.LocaleController;
+import com.sscs.kdb.controller.MethodController;
+import com.sscs.kdb.controller.NavigationController;
+import com.sscs.kdb.controller.UserInfoController;
+import com.sscs.kdb.entity.AuthLog;
+import com.sscs.kdb.entity.AuthUser;
+import com.sscs.kdb.entity.AuthUserRole;
+import com.sscs.kdb.entity.Maindocumenttype;
+import com.sscs.kdb.entity.Projectdocument;
+import com.sscs.kdb.entity.Projectmain;
+import com.sscs.kdb.log.util.LogUtil;
+import com.sscs.kdb.service.PromainService;
+import com.sscs.kdb.service.SystemService;
+import com.sscs.kdb.service.UserService;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
+import org.apache.log4j.Logger;
+
+@ManagedBean(name = "promain001Controller")
+@SessionScoped
+public class Promain001Controller extends MethodController implements Serializable {
+
+    private static Logger logger = LogUtil.getLogger(U001Controller.class);
+    public static final String BEAN_NAME = "promain001Controller";
+    @EJB
+    private UserService userService;
+    @EJB
+    private SystemService stockService;
+    @EJB
+    private PromainService promainService;
+    
+    private Projectmain projectmain;
+    private List<Promain001Controller> dataList;
+    private Integer seq;
+    private String projectName;
+    private Date starDate;
+    private String customerName;
+    private String projectDescription;
+    private String projectID;
+    private String extConID;
+    private Date endDate;
+    private String createBy;
+    private String modifyBy;
+    private Date lastModified;
+    private String projectAmount;
+    private String customerPlace;
+    private String consultAmount;
+    private String contactCode;
+    
+    private String projectName_Search;
+    private Date starDate_Search;
+    private String customerName_Search;
+    
+    //tap
+    private List<SelectItem> mainDocumentTypeList;
+    private String docTypeID;
+    
+    //tap2
+    private List<Promain001Controller> dataMainDocList;
+    private Integer seq_doc;
+    private String docName;
+    private Projectdocument projectdocument;
+    
+    
+    
+    
+    private String userId;
+    private String userName;
+    private String firstName;
+    private String lastName;
+    private String passwordU;
+    private String confirmPasswordU;
+    private String userRole;
+    
+    private AuthUser authUser;
+    private UserInfoController userInfo;
+    private LocaleController local;
+    private NavigationController navigationController;
+    private String mode;
+    private boolean check;
+
+    public Promain001Controller() {
+    }
+
+    @PostConstruct
+    @Override
+    public void init() throws Exception {
+        String METHOD_NAME = "init";
+        try {
+            userInfo = (UserInfoController) JsfUtil.getManagedBean(UserInfoController.CONTROLLER_NAME);
+            local = (LocaleController) JsfUtil.getManagedBean(LocaleController.CONTROLLER_NAME);
+            navigationController = (NavigationController) JsfUtil.getManagedBean(NavigationController.CONTROLLER_NAME);
+            
+            mainDocumentTypeList = new ArrayList<SelectItem>();
+            mainDocumentTypeList.add(new SelectItem("", ""));
+            List<Maindocumenttype> list = promainService.findAllMainDocType();
+            for (int i = 0; i < list.size(); i++) {
+                Maindocumenttype mt = (Maindocumenttype) list.get(i);
+                mainDocumentTypeList.add(new SelectItem(mt.getDocTypeID(), mt.getDocTypeTH()));
+            }
+            
+            findAll();
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+    
+    public void findProjectdocumentByCriteria() throws Exception{
+         String METHOD_NAME = "findProjectdocumentByCriteria";
+        try {
+            userInfo = (UserInfoController) JsfUtil.getManagedBean(UserInfoController.CONTROLLER_NAME);
+            local = (LocaleController) JsfUtil.getManagedBean(LocaleController.CONTROLLER_NAME);
+            navigationController = (NavigationController) JsfUtil.getManagedBean(NavigationController.CONTROLLER_NAME);
+
+            Projectdocument  find_obj =new Projectdocument();
+            find_obj.setProjectID(this.getProjectID());
+            if (StringUtil.isNotNullOrNotEmpty(this.getDocTypeID())) {
+                find_obj.setDocTypeID(new Maindocumenttype(this.docTypeID));
+            }
+            if (StringUtil.isNotNullOrNotEmpty(this.getDocName())) {
+               find_obj.setDocName(this.getDocName());
+            }
+            
+            List<Projectdocument> ProjectdocumentList = promainService.findProjectdocumentByCriteria(find_obj);
+            dataMainDocList = new ArrayList<Promain001Controller>();
+            seq_doc=1;
+            for (int i = 0; i < ProjectdocumentList.size(); i++) {
+                Promain001Controller u001 = new Promain001Controller();
+                u001.setSeq_doc(seq_doc);
+                u001.setProjectdocument((Projectdocument) ProjectdocumentList.get(i));
+                dataMainDocList.add(u001);
+                seq_doc=seq_doc+1;
+            }
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+    
+    
+    
+
+    @Override
+    public void insert() throws Exception {
+        String METHOD_NAME = "insert";
+        try {
+            //LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            mode = "A";
+            this.projectName="";
+            this.projectDescription="";
+            navigationController.nextPage("promain/main001_edit");
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+    
+    @Override
+    public void find() throws Exception {
+        String METHOD_NAME = "find";
+        try {
+            //LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            mode = "U";
+            this.projectID=projectmain.getProjectmainPK().getProjectID();
+            this.extConID=projectmain.getProjectmainPK().getExtConID();
+            this.contactCode=projectmain.getContactCode();
+            this.customerName=projectmain.getCustomerName();
+            this.starDate=projectmain.getStartDate();
+            this.endDate=projectmain.getEndDate();
+            this.customerPlace=projectmain.getCustomerPlace();
+            this.projectAmount=projectmain.getProjectAmount();
+            this.consultAmount=projectmain.getConsultAmount();
+            this.projectDescription=projectmain.getProjectDescription();
+            
+            findProjectdocumentByCriteria();            
+            navigationController.nextPage("promain/mainTab001");
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void findAll() throws Exception {
+        String METHOD_NAME = "findAll";
+        try {
+            LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            List<Projectmain> projectmainList = promainService.findProjectMainAll();
+            dataList = new ArrayList<Promain001Controller>();
+            seq=1;
+            for (int i = 0; i < projectmainList.size(); i++) {
+                Promain001Controller u001 = new Promain001Controller();
+                u001.setSeq(seq);
+                u001.setProjectmain((Projectmain) projectmainList.get(i));
+                dataList.add(u001);
+                seq=seq+1;
+            }
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2010", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void delete() throws Exception {
+      /*  String METHOD_NAME = "delete";
+        try {
+            LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            for (int i = 0; i < dataList.size(); i++) {
+                U001Controller u001 = (U001Controller) dataList.get(i);
+                if (u001.isCheck()) {
+                    userService.updateStatus(u001.getAuthUser());
+                }
+            }
+            findAll();
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2001", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }*/
+    }
+    
+    
+    
+    
+    
+
+    @Override
+    public void update() throws Exception {
+        String METHOD_NAME = "update";
+        try {
+            LogUtil.infoLog(logger, this.getClass(), METHOD_NAME, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            if (StringUtil.isNullOrEmpty(userName)) {
+                error = ExceptionUtil.addLineException(error, "errors.1001", new String[]{MsgBundleLoader.getMessage("userName", MsgBundleLoader.APPLICATIONRESOURCES_PATH)});
+            }
+            if (StringUtil.isNullOrEmpty(userRole)) {
+                error = ExceptionUtil.addLineException(error, "errors.1001", new String[]{MsgBundleLoader.getMessage("userRole", MsgBundleLoader.APPLICATIONRESOURCES_PATH)});
+            }
+            if (error.size() > 0) {
+                JsfUtil.addErrorMessages(error);
+                return;
+            }
+            if (mode.equals("A")) {
+                if (StringUtil.isNullOrEmpty(passwordU)) {
+                    error = ExceptionUtil.addLineException(error, "errors.1001", new String[]{MsgBundleLoader.getMessage("password", MsgBundleLoader.APPLICATIONRESOURCES_PATH)});
+                    JsfUtil.addErrorMessages(error);
+                    return;
+                }
+                if (StringUtil.isNullOrEmpty(confirmPasswordU)) {
+                    error = ExceptionUtil.addLineException(error, "errors.1001", new String[]{MsgBundleLoader.getMessage("password", MsgBundleLoader.APPLICATIONRESOURCES_PATH)});
+                    JsfUtil.addErrorMessages(error);
+                    return;
+                }
+                if (!passwordU.equalsIgnoreCase(confirmPasswordU)) {
+                    error = ExceptionUtil.addLineException(error, "errors.1002", new String[]{""});
+                    JsfUtil.addErrorMessages(error);
+                    return;
+                } else {
+                    authUser = new AuthUser();
+                    authUser.setUserId(userId);
+                    authUser.setUsername(userName);
+                    authUser.setPassword(MD5Generator.md5(passwordU));
+                    authUser.setFirstName(firstName);
+                    authUser.setLastName(lastName);
+                    authUser.setActive(true);
+                    authUser.setStatus(true);
+                    authUser.setTheme("ui-lightness");
+                    authUser.setLocale(local.getLocale().toString());
+                    authUser.setCreatedBy(userInfo.getUsername());
+                    authUser.setCreatedDt(DateTimeUtil.currentDate());
+                    authUser.setRevisedBy(userInfo.getUsername());
+                    authUser.setRevisedDt(DateTimeUtil.currentDate());
+
+                    AuthUserRole authUserRole = new AuthUserRole();
+                    authUserRole.setUserId(authUser.getUserId());
+                    authUserRole.setRoleName(userRole);
+                    authUser.setAuthUserRole(authUserRole);
+                    authUserRole.setAuthUser(authUser);
+
+                    authUser.setAuthLogList(new ArrayList<AuthLog>());
+                    userService.createAuthUser(authUser);
+                }
+            } else {
+                if (StringUtil.isNotNullOrNotEmpty(passwordU)) {
+                    if (StringUtil.isNullOrEmpty(confirmPasswordU)) {
+                        error = ExceptionUtil.addLineException(error, "errors.1001", new String[]{MsgBundleLoader.getMessage("confirmPasswordU", MsgBundleLoader.APPLICATIONRESOURCES_PATH)});
+                        JsfUtil.addErrorMessages(error);
+                        return;
+                    } else {
+                        if (!passwordU.equalsIgnoreCase(confirmPasswordU)) {
+                            error = ExceptionUtil.addLineException(error, "errors.1002", new String[]{""});
+                            JsfUtil.addErrorMessages(error);
+                            return;
+                        } else {
+                            authUser.setPassword(MD5Generator.md5(passwordU));
+                            authUser.setPasswoedChangeDt(DateTimeUtil.currentDate());
+                        }
+                    }
+                }
+                authUser.setUsername(userName);
+                authUser.setFirstName(firstName);
+                authUser.setLastName(lastName);
+                authUser.getAuthUserRole().setRoleName(userRole);
+                userService.editAuthUser(authUser);
+            }
+            findAll();
+            navigationController.nextPage("user/u001");
+        } catch (Exception ex) {
+            LogUtil.errorLog(logger, this.getClass(), METHOD_NAME, ex, userInfo.getUsername());
+            List<String> error = new ArrayList<String>();
+            error = ExceptionUtil.addLineException(error, "errors.2001", new String[]{ex.getMessage()});
+            JsfUtil.addErrorMessages(error);
+        }
+    }
+
+    @Override
+    public void cancel() throws Exception {
+    }
+
+    @Override
+    public void reportPDF() throws Exception {
+    }
+
+    @Override
+    public void reportExcel() throws Exception {
+    }
+
+    public void selectAll() {
+      //  for (int i = 0; i < dataList.size(); i++) {
+      //     Promain001Controller promain001Controller = (Promain001Controller) dataList.get(i);
+      //      promain001Controller.setCheck(check);
+       // }
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        Promain001Controller.logger = logger;
+    }
+
+    public String getPasswordU() {
+        return passwordU;
+    }
+
+    public void setPasswordU(String passwordU) {
+        this.passwordU = passwordU;
+    }
+
+    public String getConfirmPasswordU() {
+        return confirmPasswordU;
+    }
+
+    public void setConfirmPasswordU(String confirmPasswordU) {
+        this.confirmPasswordU = confirmPasswordU;
+    }
+
+    public List<Promain001Controller> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<Promain001Controller> dataList) {
+        this.dataList = dataList;
+    }
+
+    public AuthUser getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(AuthUser authUser) {
+        this.authUser = authUser;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Projectmain getProjectmain() {
+        return projectmain;
+    }
+
+    public void setProjectmain(Projectmain projectmain) {
+        this.projectmain = projectmain;
+    }
+
+    public Integer getSeq() {
+        return seq;
+    }
+
+    public void setSeq(Integer seq) {
+        this.seq = seq;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public Date getStarDate() {
+        return starDate;
+    }
+
+    public void setStarDate(Date starDate) {
+        this.starDate = starDate;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getProjectDescription() {
+        return projectDescription;
+    }
+
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
+
+    public String getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    public String getExtConID() {
+        return extConID;
+    }
+
+    public void setExtConID(String extConID) {
+        this.extConID = extConID;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getModifyBy() {
+        return modifyBy;
+    }
+
+    public void setModifyBy(String modifyBy) {
+        this.modifyBy = modifyBy;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getProjectAmount() {
+        return projectAmount;
+    }
+
+    public void setProjectAmount(String projectAmount) {
+        this.projectAmount = projectAmount;
+    }
+
+    public String getCustomerPlace() {
+        return customerPlace;
+    }
+
+    public void setCustomerPlace(String customerPlace) {
+        this.customerPlace = customerPlace;
+    }
+
+    public String getConsultAmount() {
+        return consultAmount;
+    }
+
+    public void setConsultAmount(String consultAmount) {
+        this.consultAmount = consultAmount;
+    }
+
+    public String getContactCode() {
+        return contactCode;
+    }
+
+    public void setContactCode(String contactCode) {
+        this.contactCode = contactCode;
+    }
+
+    public String getProjectName_Search() {
+        return projectName_Search;
+    }
+
+    public void setProjectName_Search(String projectName_Search) {
+        this.projectName_Search = projectName_Search;
+    }
+
+    public Date getStarDate_Search() {
+        return starDate_Search;
+    }
+
+    public void setStarDate_Search(Date starDate_Search) {
+        this.starDate_Search = starDate_Search;
+    }
+
+    public String getCustomerName_Search() {
+        return customerName_Search;
+    }
+
+    public void setCustomerName_Search(String customerName_Search) {
+        this.customerName_Search = customerName_Search;
+    }
+
+    public String getDocTypeID() {
+        return docTypeID;
+    }
+
+    public void setDocTypeID(String docTypeID) {
+        this.docTypeID = docTypeID;
+    }
+
+    public List<SelectItem> getMainDocumentTypeList() {
+        return mainDocumentTypeList;
+    }
+
+    public void setMainDocumentTypeList(List<SelectItem> mainDocumentTypeList) {
+        this.mainDocumentTypeList = mainDocumentTypeList;
+    }
+
+    public List<Promain001Controller> getDataMainDocList() {
+        return dataMainDocList;
+    }
+
+    public void setDataMainDocList(List<Promain001Controller> dataMainDocList) {
+        this.dataMainDocList = dataMainDocList;
+    }
+
+    public Integer getSeq_doc() {
+        return seq_doc;
+    }
+
+    public void setSeq_doc(Integer seq_doc) {
+        this.seq_doc = seq_doc;
+    }
+
+    public String getDocName() {
+        return docName;
+    }
+
+    public void setDocName(String docName) {
+        this.docName = docName;
+    }
+
+    public Projectdocument getProjectdocument() {
+        return projectdocument;
+    }
+
+    public void setProjectdocument(Projectdocument projectdocument) {
+        this.projectdocument = projectdocument;
+    }
+    
+}

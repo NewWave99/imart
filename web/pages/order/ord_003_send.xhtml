@@ -1,0 +1,174 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.cart']}" actionListener="#{navigationController.nextPage('product/ord_002_cart')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.buy']}" disabled="true"/>
+    </p:breadCrumb>
+    <p:focus context="content-layout"/>  
+    <p:panel id="content-layout" styleClass="margin">
+            <table style="width: 100%;"  border="0">
+                <tr>
+                    <td style="width: 22%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 18%"></td>
+                    <td style="width: 15%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 37%"></td>
+                </tr>
+                <tr>
+                    <td/>
+                    <td colspan="2"  style="text-align: left">
+                        <h:outputText value="#{app['enterAddress']}" styleClass="lbl_bold" style="color: mediumblue"/>
+                    </td>
+                    <td/>
+                    <td colspan="2" style="text-align: left">
+                        <h:outputText value="#{app['enterCard']}" styleClass="lbl_bold" style="color: forestgreen"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                          <p:spacer width="8" height="8" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['firstName']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendFistName}" styleClass="mandatory" style="width:180px;" maxlength="200"/>
+                    </td>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['nameCare']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td/>
+                    <td >
+                        <p:inputText value="ADISORN JOMJANYONG"  style="width:180px;" maxlength="200"/>
+                    </td>
+                </tr>
+                 <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['surName']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendLastName}" styleClass="mandatory" style="width:180px;" maxlength="200"/>
+                    </td>
+                     <td style="text-align: right">
+                        <h:outputText value="#{app['cardNumber']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td/>
+                    <td >
+                        <p:inputText value="8474635498763647"  style="width:180px;" maxlength="16"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['telephone']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendTelephone}" styleClass="mandatory" style="width:180px;" maxlength="30"/>
+                    </td>
+                     <td style="text-align: right">
+                        <h:outputText value="#{app['exDate']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td/>
+                    <td >
+                       <p:inputText value="03/17"  style="width:40px;" maxlength="5"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['email']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendEmail}" styleClass="mandatory" style="width:180px;" maxlength="100"/>
+                    </td>
+                     <td style="text-align: right">
+                       <h:outputText value="#{app['cvvNumber']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td/>
+                    <td >
+                        <p:inputText value="687" styleClass="mandatory" style="width:40px;" maxlength="4"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right;vertical-align: text-top;">
+                        <h:outputText value="#{app['address']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputTextarea value="#{orderList001Controller.sendAddress}" styleClass="mandatory"  style="width:180px;height:50px;" maxlength="200"/>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['subDistrict']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendKhet}" styleClass="mandatory" style="width:150px;" maxlength="100"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['disttrict']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendKwang}" styleClass="mandatory" style="width:150px;" maxlength="100"/>
+                    </td>
+                    <td/>
+                    <td/>
+                    <td/>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['province']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendProvince}" styleClass="mandatory" style="width:150px;" maxlength="100"/>
+                    </td>
+                    <td/>
+                    <td/>
+                    <td/>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['postcode']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{orderList001Controller.sendZipcode}" styleClass="mandatory" style="width:50px;" maxlength="5"/>
+                    </td>
+                    <td style="text-align: right">
+                         
+                    </td>
+                    <td colspan="2" style="text-align: left">
+                        <h:panelGroup style="text-align: left;">
+                            <p:commandButton value="#{msg['btn.order']}" icon="icon-approve"  action="#{orderList001Controller.paymentOrder()}"  update="@(form)" />
+                            <p:commandButton value="#{msg['btn.cancel']}" icon="icon-cancel" actionListener="#{navigationController.nextPage('order/ord_001_cate')}" update="@(form)" global="false"/>
+                        </h:panelGroup> 
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right"></td>
+                    <td ></td>
+                    <td ></td>
+                    <td ></td>
+                    <td colspan="2">
+                        <br/>
+                       
+                    </td>
+                </tr>
+            </table>  
+    </p:panel>
+</ui:composition>

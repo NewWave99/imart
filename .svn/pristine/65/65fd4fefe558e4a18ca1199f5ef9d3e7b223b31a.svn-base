@@ -1,0 +1,156 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "bestpracticesolution")
+@NamedQueries({
+    @NamedQuery(name = "Bestpracticesolution.findAll", query = "SELECT b FROM Bestpracticesolution b")})
+public class Bestpracticesolution implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "SolutionID")
+    private String solutionID;
+    @Size(max = 5000)
+    @Column(name = "Solution")
+    private String solution;
+    @Column(name = "Rating")
+    private Integer rating;
+    @Size(max = 25)
+    @Column(name = "CreateBy")
+    private String createBy;
+    @Size(max = 25)
+    @Column(name = "ModifyBy")
+    private String modifyBy;
+    @Column(name = "LastModified")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified;
+    @JoinColumn(name = "BestPracticeID", referencedColumnName = "BestPracticeID")
+    @ManyToOne
+    private Bestpractice bestPracticeID;
+    @JoinColumn(name = "ConsultID", referencedColumnName = "ConsultID")
+    @ManyToOne
+    private Consultant consultID;
+
+    public Bestpracticesolution() {
+    }
+
+    public Bestpracticesolution(String solutionID) {
+        this.solutionID = solutionID;
+    }
+
+    public String getSolutionID() {
+        return solutionID;
+    }
+
+    public void setSolutionID(String solutionID) {
+        this.solutionID = solutionID;
+    }
+
+    public String getSolution() {
+        return solution;
+    }
+
+    public void setSolution(String solution) {
+        this.solution = solution;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getModifyBy() {
+        return modifyBy;
+    }
+
+    public void setModifyBy(String modifyBy) {
+        this.modifyBy = modifyBy;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Bestpractice getBestPracticeID() {
+        return bestPracticeID;
+    }
+
+    public void setBestPracticeID(Bestpractice bestPracticeID) {
+        this.bestPracticeID = bestPracticeID;
+    }
+
+    public Consultant getConsultID() {
+        return consultID;
+    }
+
+    public void setConsultID(Consultant consultID) {
+        this.consultID = consultID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (solutionID != null ? solutionID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Bestpracticesolution)) {
+            return false;
+        }
+        Bestpracticesolution other = (Bestpracticesolution) object;
+        if ((this.solutionID == null && other.solutionID != null) || (this.solutionID != null && !this.solutionID.equals(other.solutionID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.Bestpracticesolution[ solutionID=" + solutionID + " ]";
+    }
+    
+}

@@ -1,0 +1,177 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "consulteducation")
+@NamedQueries({
+    @NamedQuery(name = "Consulteducation.findAll", query = "SELECT c FROM Consulteducation c")})
+public class Consulteducation implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected ConsulteducationPK consulteducationPK;
+    @Size(max = 255)
+    @Column(name = "InstituteName")
+    private String instituteName;
+    @Size(max = 255)
+    @Column(name = "EMajor")
+    private String eMajor;
+    @Size(max = 255)
+    @Column(name = "EMinor")
+    private String eMinor;
+    @Size(max = 255)
+    @Column(name = "GPA")
+    private String gpa;
+    @Size(max = 25)
+    @Column(name = "CreateBy")
+    private String createBy;
+    @Size(max = 25)
+    @Column(name = "ModifyBy")
+    private String modifyBy;
+    @Column(name = "LastModified")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified;
+    @JoinColumn(name = "EducationLevID", referencedColumnName = "EducationLevID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Mainconsulteducationlev mainconsulteducationlev;
+    @JoinColumn(name = "ConsultID", referencedColumnName = "ConsultID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Consultant consultant;
+
+    public Consulteducation() {
+    }
+
+    public Consulteducation(ConsulteducationPK consulteducationPK) {
+        this.consulteducationPK = consulteducationPK;
+    }
+
+    public Consulteducation(String consultID, String educationLevID) {
+        this.consulteducationPK = new ConsulteducationPK(consultID, educationLevID);
+    }
+
+    public ConsulteducationPK getConsulteducationPK() {
+        return consulteducationPK;
+    }
+
+    public void setConsulteducationPK(ConsulteducationPK consulteducationPK) {
+        this.consulteducationPK = consulteducationPK;
+    }
+
+    public String getInstituteName() {
+        return instituteName;
+    }
+
+    public void setInstituteName(String instituteName) {
+        this.instituteName = instituteName;
+    }
+
+    public String getEMajor() {
+        return eMajor;
+    }
+
+    public void setEMajor(String eMajor) {
+        this.eMajor = eMajor;
+    }
+
+    public String getEMinor() {
+        return eMinor;
+    }
+
+    public void setEMinor(String eMinor) {
+        this.eMinor = eMinor;
+    }
+
+    public String getGpa() {
+        return gpa;
+    }
+
+    public void setGpa(String gpa) {
+        this.gpa = gpa;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getModifyBy() {
+        return modifyBy;
+    }
+
+    public void setModifyBy(String modifyBy) {
+        this.modifyBy = modifyBy;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Mainconsulteducationlev getMainconsulteducationlev() {
+        return mainconsulteducationlev;
+    }
+
+    public void setMainconsulteducationlev(Mainconsulteducationlev mainconsulteducationlev) {
+        this.mainconsulteducationlev = mainconsulteducationlev;
+    }
+
+    public Consultant getConsultant() {
+        return consultant;
+    }
+
+    public void setConsultant(Consultant consultant) {
+        this.consultant = consultant;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (consulteducationPK != null ? consulteducationPK.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Consulteducation)) {
+            return false;
+        }
+        Consulteducation other = (Consulteducation) object;
+        if ((this.consulteducationPK == null && other.consulteducationPK != null) || (this.consulteducationPK != null && !this.consulteducationPK.equals(other.consulteducationPK))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.Consulteducation[ consulteducationPK=" + consulteducationPK + " ]";
+    }
+    
+}

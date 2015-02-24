@@ -1,0 +1,30 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.entity.Extorgspecialization;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+/**
+ *
+ * @author Administrator
+ */
+@Stateless
+public class ExtorgspecializationDAO extends AbstractFacade<Extorgspecialization> implements ExtorgspecializationDAOLocal {
+    @PersistenceContext(unitName = "kdb-warPU")
+    private EntityManager em;
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public ExtorgspecializationDAO() {
+        super(Extorgspecialization.class);
+    }
+    
+}

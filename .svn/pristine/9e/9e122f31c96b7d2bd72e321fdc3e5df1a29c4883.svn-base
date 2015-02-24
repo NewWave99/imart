@@ -1,0 +1,40 @@
+package com.sscs.kdb.log.util;
+
+import org.apache.log4j.Logger;
+
+public class BaseLogService
+        implements LogService {
+
+    public BaseLogService() {
+    }
+
+    @Override
+    public void log(LogObject logObject) {
+        Logger logger = Logger.getLogger(logObject.getClassName());
+        switch (logObject.getLogLevel()) {
+            case 1: // '\001'
+                logger.debug(logObject.getLogMessage());
+                break;
+
+            case 2: // '\002'
+                logger.info(logObject.getLogMessage());
+                break;
+
+            case 3: // '\003'
+                logger.warn(logObject.getLogMessage());
+                break;
+
+            case 4: // '\004'
+                logger.error(logObject.getLogMessage());
+                break;
+
+            case 5: // '\005'
+                logger.fatal(logObject.getLogMessage());
+                break;
+
+            default:
+                logger.debug(logObject.getLogMessage());
+                break;
+        }
+    }
+}

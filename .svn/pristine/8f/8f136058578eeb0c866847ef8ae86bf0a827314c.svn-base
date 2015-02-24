@@ -1,0 +1,48 @@
+package com.sscs.kdb.controller;
+
+import com.sscs.kdb.common.util.JsfUtil;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+
+/**
+ * @author MR Aekasit Sengnualnim (Aek) Senior Software Developer
+ *
+ * SSC Solutions Co., Ltd. 333 Lao Peng Nguan Tower 1, 27th A Floor,
+ * Viphavadee-Rangsit Road, Jomphol, Jatujak, Bangkok 10900 Thailand Tel :+66
+ * (0) 2618 8638-9 Fax :+66 (0) 2618 8640 Mobile : +66 91004 1006 Skype :
+ * s.aekasit Email : aekasit@sscs.co.th MSN : s.aekasit@hotmail.com
+ * http://www.sscs.co.th/
+ *
+ * @create 17-12-2012 9:52:23 AM
+ */
+@ManagedBean(name = "loginController")
+@RequestScoped
+public class LoginController {
+
+    public static final String BEAN_NAME = "loginController";
+
+    public LoginController() {
+    }
+
+    @PostConstruct
+    public void init() {
+    }
+
+    public void checkLogin() {
+        try {
+            if (JsfUtil.getExternalContext().getUserPrincipal() != null) {
+                ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+                context.redirect(context.getRequestContextPath());
+                FacesContext.getCurrentInstance().responseComplete();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}

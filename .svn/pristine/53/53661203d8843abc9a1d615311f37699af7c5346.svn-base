@@ -1,0 +1,104 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.common.constants;
+
+/**
+ *
+ * @author ACOP_LAR
+ */
+public class ReportConstant {
+
+    //report parameter
+    public static String LOGO = "logo";
+    public static String PUR_INVOICE_NO = "purInvoiceNo";
+    public static String PUR_PREORDER_NO = "purPreorderNo";
+    public static String PUR_DATE = "purDate";
+    public static String PUR_USER = "purUser";
+    public static String PUR_CUS_CODE = "purCusCode";
+    public static String PUR_CUS_NAME = "purCusName";
+    public static String PUR_CUS_CONTACTNAME = "purCusContactName";
+    public static String PUR_CUS_EMAIL = "purCusEmail";
+    public static String PUR_CUS_TELEPHONE = "purCusTelephone";
+    public static String PUR_CUS_FAX = "purCusFax";
+    public static String PUR_CUS_ADDRESS = "purCusAddress";
+    public static String PUR_REMARK = "purRemark";
+    public static String PUR_TOTAL_QTY = "purTotalQty";
+    public static String PUR_TOTAL_AMOUNT = "purTotalAmount";
+    public static String PUR_DISCOUNT = "purDiscount";
+    public static String PUR_SUB_TOTAL = "purSubTotal";
+    public static String PUR_TOTAL_VAT = "purTotalVat";
+    public static String PUR_GRAND_TOTAL = "purGrandTotal";
+    public static String PUR_DEPOSIT = "purDeposit";
+    public static String PUR_BALANCE = "purBalance";
+    public static String PUR_RECEIVE_MONEY = "purReceiveMoney";
+    public static String PUR_RETURE_CHANGE = "purReturnChange";
+    public static String REPORT_DATE = "reportDate";
+    public static String REPORT_CONDITION = "reportCondition";
+    public static String SUM_PUR_TOTAL_QTY = "sumPurTotalQty";
+    public static String SUM_PUR_TOTAL_AMOUNT = "sumPurTotalAmount";
+    public static String SUM_PUR_DISCOUNT = "sumPurDiscount";
+    public static String SUM_PUR_GRAND_TOTAL = "sumPurGrandTotal";
+    //report
+    //pro
+    public static String PRO003_CODE = "PRO003";
+    public static String PRO003_JASPER = "BarCodeReport";
+    //pur001
+    public static String PUR001S1_CODE = "PUR001S1";
+    public static String PUR001S1_JASPER = "ReceiptReport";
+    public static int PUR001S1_ROWS = 25;
+    public static String PUR001S2_CODE = "PUR001S2";
+    public static String PUR001S2_JASPER = "ReceiptNoVatReport";
+    public static int PUR001S2_ROWS = 30;
+    //pur002
+    public static String PUR002S1_CODE = "PUR002S1";
+    public static String PUR002S1_JASPER = "PreOrderReport";
+    public static int PUR002S1_ROWS = 25;
+    public static String PUR002S2_CODE = "PUR002S2";
+    public static String PUR002S2_JASPER = "PreOrderNoVatReport";
+    public static int PUR002S2_ROWS = 30;
+    //pur003
+    public static String PUR003S1_CODE = "PUR003S1";
+    public static String PUR003S1_JASPER = "ReceiptHandmadeReport";
+    public static int PUR003S1_ROWS = 25;
+    public static String PUR003S2_CODE = "PUR003S2";
+    public static String PUR003S2_JASPER = "ReceiptHandmadeNoVatReport";
+    public static int PUR003S2_ROWS = 30;
+    //pur004
+    public static String PUR004S1_CODE = "PUR004S1";
+    public static String PUR004S1_JASPER = "ReceiptReport";
+    public static int PUR004S1_ROWS = 25;
+    public static String PUR004S2_CODE = "PUR004S2";
+    public static String PUR004S2_JASPER = "ReceiptNoVatReport";
+    public static int PUR004S2_ROWS = 30;
+    public static String PUR004S3_CODE = "PUR004S3";
+    public static String PUR004S3_JASPER = "ReceiptByPreOrderReport";
+    public static int PUR004S3_ROWS = 22;
+    public static String PUR004S4_CODE = "PUR004S4";
+    public static String PUR004S4_JASPER = "ReceiptByPreOrderNoVatReport";
+    public static int PUR004S4_ROWS = 27;
+    //pur005
+    public static String PUR005S1_CODE = "PUR005S1";
+    public static String PUR005S1_JASPER = "PreOrderReport";
+    public static int PUR005S1_ROWS = 25;
+    public static String PUR005S2_CODE = "PUR005S2";
+    public static String PUR005S2_JASPER = "PreOrderNoVatReport";
+    public static int PUR005S2_ROWS = 30;
+    public static String PUR005S3_CODE = "PUR005S3";
+    public static String PUR005S3_JASPER = "ReceiptByPreOrderReport";
+    public static int PUR005S3_ROWS = 22;
+    public static String PUR005S4_CODE = "PUR005S4";
+    public static String PUR005S4_JASPER = "ReceiptByPreOrderNoVatReport";
+    public static int PUR005S4_ROWS = 27;
+    //rep
+    public static String REP001_CODE = "REP001";
+    public static String REP001_JASPER = "SellingReport";
+    public static String REP002_CODE = "REP002";
+    public static String REP002_JASPER = "CustomerSellingReport";
+    public static String REP003_CODE = "REP003";
+    public static String REP003S1_JASPER = "BestSellerReport";
+    public static String REP003S2_JASPER = "UnsalableReport";
+    public static String REP004_CODE = "REP004";
+    public static String REP004_JASPER = "SalesSellingReport";
+}

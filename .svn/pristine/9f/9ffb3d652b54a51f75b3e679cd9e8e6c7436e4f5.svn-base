@@ -1,0 +1,166 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "mainsector")
+@NamedQueries({
+    @NamedQuery(name = "Mainsector.findAll", query = "SELECT m FROM Mainsector m")})
+public class Mainsector implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "SectorID")
+    private String sectorID;
+    @Size(max = 255)
+    @Column(name = "SectorNameTH")
+    private String sectorNameTH;
+    @Size(max = 255)
+    @Column(name = "SectorNameEN")
+    private String sectorNameEN;
+    @Column(name = "SectorOrder")
+    private Integer sectorOrder;
+    @Size(max = 25)
+    @Column(name = "CreateBy")
+    private String createBy;
+    @Size(max = 25)
+    @Column(name = "ModifyBy")
+    private String modifyBy;
+    @Column(name = "LastModified")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mainsector")
+    private List<Extorgsector> extorgsectorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "mainsector")
+    private List<Consultantsector> consultantsectorList;
+
+    public Mainsector() {
+    }
+
+    public Mainsector(String sectorID) {
+        this.sectorID = sectorID;
+    }
+
+    public String getSectorID() {
+        return sectorID;
+    }
+
+    public void setSectorID(String sectorID) {
+        this.sectorID = sectorID;
+    }
+
+    public String getSectorNameTH() {
+        return sectorNameTH;
+    }
+
+    public void setSectorNameTH(String sectorNameTH) {
+        this.sectorNameTH = sectorNameTH;
+    }
+
+    public String getSectorNameEN() {
+        return sectorNameEN;
+    }
+
+    public void setSectorNameEN(String sectorNameEN) {
+        this.sectorNameEN = sectorNameEN;
+    }
+
+    public Integer getSectorOrder() {
+        return sectorOrder;
+    }
+
+    public void setSectorOrder(Integer sectorOrder) {
+        this.sectorOrder = sectorOrder;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getModifyBy() {
+        return modifyBy;
+    }
+
+    public void setModifyBy(String modifyBy) {
+        this.modifyBy = modifyBy;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public List<Extorgsector> getExtorgsectorList() {
+        return extorgsectorList;
+    }
+
+    public void setExtorgsectorList(List<Extorgsector> extorgsectorList) {
+        this.extorgsectorList = extorgsectorList;
+    }
+
+    public List<Consultantsector> getConsultantsectorList() {
+        return consultantsectorList;
+    }
+
+    public void setConsultantsectorList(List<Consultantsector> consultantsectorList) {
+        this.consultantsectorList = consultantsectorList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (sectorID != null ? sectorID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Mainsector)) {
+            return false;
+        }
+        Mainsector other = (Mainsector) object;
+        if ((this.sectorID == null && other.sectorID != null) || (this.sectorID != null && !this.sectorID.equals(other.sectorID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.Mainsector[ sectorID=" + sectorID + " ]";
+    }
+    
+}

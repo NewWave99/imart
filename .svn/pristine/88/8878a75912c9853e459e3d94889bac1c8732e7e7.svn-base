@@ -1,0 +1,49 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.service;
+
+import com.sscs.kdb.controller.promain.Promain001Controller;
+import com.sscs.kdb.dao.ProjectmainFacadeDAOLocal;
+import com.sscs.kdb.entity.AuthUser;
+import com.sscs.kdb.entity.Maindocumenttype;
+import com.sscs.kdb.entity.Projectdocument;
+import com.sscs.kdb.entity.Projectmain;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+
+/**
+ *
+ * @author Adisor6
+ */
+@Stateless
+public class PromainServiceImpl implements PromainService {
+    
+    @EJB
+    private ProjectmainFacadeDAOLocal projectMainFacade;
+    
+    
+    @Override
+    public List<Projectmain> findProjectMainAll() throws Exception {
+       return projectMainFacade.findAll();
+    }
+
+    @Override
+    public List<Projectmain> findByCriteria(Projectmain projectmain) throws Exception {
+        return projectMainFacade.findByCriteria(projectmain);
+    }
+
+    @Override
+    public List<Maindocumenttype> findAllMainDocType() throws Exception {
+       return projectMainFacade.findAllMainDocType();
+    }
+    
+   
+   @Override
+   public List<Projectdocument>  findProjectdocumentByCriteria(Projectdocument projectdocument) throws Exception {
+       return projectMainFacade.findProjectdocumentByCriteria(projectdocument);
+    }
+}

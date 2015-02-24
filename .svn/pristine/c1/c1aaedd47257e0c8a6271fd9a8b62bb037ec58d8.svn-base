@@ -1,0 +1,38 @@
+package com.sscs.kdb.common.util;
+
+public class ExcelBean {
+
+    private Integer row;
+    private Integer col;
+    private String dataValue;
+
+    public ExcelBean(Integer row, Integer col, String dataValue) {
+        this.row = row;
+        this.col = col;
+        this.dataValue = dataValue;
+    }
+    
+    public Integer getRow() {
+        return row;
+    }
+
+    public void setRow(Integer row) {
+        this.row = row;
+    }
+
+    public Integer getCol() {
+        return col;
+    }
+
+    public void setCol(Integer col) {
+        this.col = col;
+    }
+
+    public String getDataValue() {
+        return dataValue;
+    }
+
+    public void setDataValue(String dataValue) {
+        this.dataValue = dataValue;
+    }
+}

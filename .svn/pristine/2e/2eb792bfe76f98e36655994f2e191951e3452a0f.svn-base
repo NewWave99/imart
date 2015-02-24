@@ -1,0 +1,95 @@
+package com.sscs.kdb.reportbean;
+
+public class REP004ReportBean {
+
+    private String proSales;
+    private String seq;
+    private String proCode;
+    private String proDetail;
+    private String proDate;
+    private String proQty;
+    private String proUnitPrice;
+    private String proAmount;
+    private String proTotalQty;
+    private String proTotalAmount;
+
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String seq) {
+        this.seq = seq;
+    }
+
+    public String getProCode() {
+        return proCode;
+    }
+
+    public void setProCode(String proCode) {
+        this.proCode = proCode;
+    }
+
+    public String getProDate() {
+        return proDate;
+    }
+
+    public void setProDate(String proDate) {
+        this.proDate = proDate;
+    }
+
+    public String getProQty() {
+        return proQty;
+    }
+
+    public void setProQty(String proQty) {
+        this.proQty = proQty;
+    }
+
+    public String getProUnitPrice() {
+        return proUnitPrice;
+    }
+
+    public void setProUnitPrice(String proUnitPrice) {
+        this.proUnitPrice = proUnitPrice;
+    }
+
+    public String getProAmount() {
+        return proAmount;
+    }
+
+    public void setProAmount(String proAmount) {
+        this.proAmount = proAmount;
+    }
+
+    public String getProSales() {
+        return proSales;
+    }
+
+    public void setProSales(String proSales) {
+        this.proSales = proSales;
+    }
+
+    public String getProDetail() {
+        return proDetail;
+    }
+
+    public void setProDetail(String proDetail) {
+        this.proDetail = proDetail;
+    }
+
+    public String getProTotalQty() {
+        return proTotalQty;
+    }
+
+    public void setProTotalQty(String proTotalQty) {
+        this.proTotalQty = proTotalQty;
+    }
+
+    public String getProTotalAmount() {
+        return proTotalAmount;
+    }
+
+    public void setProTotalAmount(String proTotalAmount) {
+        this.proTotalAmount = proTotalAmount;
+    }
+}

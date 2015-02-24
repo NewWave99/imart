@@ -1,0 +1,40 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.controller.promain.Promain001Controller;
+import com.sscs.kdb.entity.Maindocumenttype;
+import com.sscs.kdb.entity.Projectdocument;
+import com.sscs.kdb.entity.Projectmain;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Adisor6
+ */
+@Local
+public interface ProjectmainFacadeDAOLocal {
+
+    void create(Projectmain projectmain) throws Exception;
+
+    void edit(Projectmain projectmain)throws Exception;
+
+    void remove(Projectmain projectmain)throws Exception;
+
+    Projectmain find(Object id)throws Exception;
+
+    List<Projectmain> findAll()throws Exception;
+
+    List<Projectmain> findRange(int[] range)throws Exception;
+
+    int count()throws Exception;
+    
+    List<Projectmain> findByCriteria(Projectmain projectmain)throws Exception;
+    
+    List<Maindocumenttype> findAllMainDocType() throws Exception;
+    
+    List<Projectdocument> findProjectdocumentByCriteria(Projectdocument projectdocument) throws Exception;
+}

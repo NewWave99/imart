@@ -1,0 +1,77 @@
+package com.sscs.kdb.reportbean;
+
+public class REP001ReportBean {
+
+    private String seq;
+    private String purDate;
+    private String purInvoiceNo;
+    private String purCusName;
+    private String purTotalQty;
+    private String purTotalAmount;
+    private String purDiscount;
+    private String purGrandTotal;
+
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String seq) {
+        this.seq = seq;
+    }
+
+    public String getPurDate() {
+        return purDate;
+    }
+
+    public void setPurDate(String purDate) {
+        this.purDate = purDate;
+    }
+
+    public String getPurInvoiceNo() {
+        return purInvoiceNo;
+    }
+
+    public void setPurInvoiceNo(String purInvoiceNo) {
+        this.purInvoiceNo = purInvoiceNo;
+    }
+
+    public String getPurCusName() {
+        return purCusName;
+    }
+
+    public void setPurCusName(String purCusName) {
+        this.purCusName = purCusName;
+    }
+
+    public String getPurTotalQty() {
+        return purTotalQty;
+    }
+
+    public void setPurTotalQty(String purTotalQty) {
+        this.purTotalQty = purTotalQty;
+    }
+
+    public String getPurTotalAmount() {
+        return purTotalAmount;
+    }
+
+    public void setPurTotalAmount(String purTotalAmount) {
+        this.purTotalAmount = purTotalAmount;
+    }
+
+    public String getPurDiscount() {
+        return purDiscount;
+    }
+
+    public void setPurDiscount(String purDiscount) {
+        this.purDiscount = purDiscount;
+    }
+
+    public String getPurGrandTotal() {
+        return purGrandTotal;
+    }
+
+    public void setPurGrandTotal(String purGrandTotal) {
+        this.purGrandTotal = purGrandTotal;
+    }
+}

@@ -1,0 +1,122 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.categorie']}" actionListener="#{navigationController.nextPage('order/ord_001_cate')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.product.detail']}" disabled="true"/>
+    </p:breadCrumb>
+    <p:focus context="content-layout"/>  
+    <p:panel id="content-layout" styleClass="margin">
+            <table style="width: 100%;"  border="0">
+                <tr>
+                    <td style="width: 22%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 20%"></td>
+                    <td style="width: 2%;"></td>
+                    <td style="width: 50%"></td>
+                </tr>
+                <tr>
+                    <td />
+                    <td />
+                    <td  style="text-align: center;color:blue;" >
+                         <h:outputText value="#{orderList001Controller.product.productName}" styleClass="lbl_bold" />
+                    </td>
+                    <td></td>
+                    <td/>
+                </tr>
+                <tr><td/></tr>
+                 <tr>
+                    <td/>
+                    <td></td>
+                    <td  style="text-align: center;width: 200px;height:200Px;">
+                         <h:graphicImage value="#{orderList001Controller.product.picture}" style="width: 300px;height: 300px;"/>
+                    </td>
+                    <td></td>
+                    <td>
+                         <table style="width: 100%;"  border="0">
+                            <tr>
+                                <td style="width: 25%;"></td>
+                                <td style="width: 2%"></td>
+                                <td style="width: 73%"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                     <h:outputText value="#{app['productPrice']}" styleClass="lbl_bold"/>
+                                </td>
+                                <td />
+                                <td  style="text-align: left;" >
+                                     <h:outputText value="#{orderList001Controller.product.price}" class="lbl_bold" style="color: red;">
+                                        <f:convertNumber pattern="฿ #,##0.00'.-'" locale="th_TH"/>
+                                    </h:outputText>
+                                    <h:outputText value="/#{app['productUnits']}" styleClass="lbl_bold"/>
+                                </td>
+                            </tr>
+                             <tr><td/></tr>
+                             <tr>
+                                <td style="text-align: right;">
+                                     <h:outputText value="#{app['selectQuantity']}" styleClass="lbl_bold"/>
+                                </td>
+                                <td />
+                                <td  style="text-align: left;" >
+                                    <p:selectOneMenu  value="#{orderList001Controller.amount}" style="width: 70px;" styleClass="mandatory">  
+                                        <f:selectItems value="#{orderList001Controller.amountList}" />  
+                                    </p:selectOneMenu>
+                                </td>
+                            </tr>
+                             <tr><td/></tr>
+                            <tr>
+                                <td style="text-align: right;">
+                                     <h:outputText value="#{app['productStatus']}" styleClass="lbl_bold"/>
+                                </td>
+                                <td />
+                                <td  style="text-align: left;width: 200px;" >
+                                     <h:panelGroup style="text-align: left;" rendered="#{orderList001Controller.product_amount > 0}">
+                                        <h:graphicImage value="resources/images/icon/active.png"/>
+                                        <h:outputText value="#{app['productInStock']}"  styleClass="lbl_bold" style="color:green"/>
+                                     </h:panelGroup>
+                                    
+                                     <h:panelGroup style="text-align: left;" rendered="#{orderList001Controller.product_amount == 0}">
+                                        <h:graphicImage value="resources/images/icon/in-active.png"/>
+                                        <h:outputText value="#{app['productOutStock']}"  styleClass="lbl_bold"/>
+                                     </h:panelGroup>
+                                </td>
+                            </tr>
+                             <tr><td /></tr>
+                             <tr>
+                                <td />
+                                <td />
+                                <td  style="text-align: left;" >
+                                    <h:panelGroup style="text-align: left;">
+                                        <p:commandButton value="#{msg['btn.buy']}" icon="icon-basket" style="background: lightgreen" action="#{orderList001Controller.insertOrder()}"  update="@(form)" />
+                                    </h:panelGroup>  
+                                </td>
+                            </tr>
+                         </table>
+                    </td>
+                </tr>
+                <tr><td /></tr>
+                <tr>
+                     <td style="text-align: right;">
+                        <h:outputText value="#{app['productDetail']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td />
+                    <td  colspan="4"  style="text-align: left;color:blue;" >
+                        <h:outputText value="#{orderList001Controller.product.productDesc}" styleClass="lbl_bold" />
+                    </td>
+                </tr>
+                <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td colspan="2" style="text-align: right">
+                        <br/>
+                        <h:panelGroup style="text-align: left;">
+                            <p:commandButton value="#{msg['btn.cancel']}" icon="icon-cancel" action="#{navigationController.nextPage('order/ord_001_cate')}" update="@(form)" global="false"/>
+                        </h:panelGroup> 
+                    </td>
+                </tr>
+            </table>  
+    </p:panel>
+</ui:composition>

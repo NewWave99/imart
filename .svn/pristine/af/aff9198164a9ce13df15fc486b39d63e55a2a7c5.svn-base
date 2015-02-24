@@ -1,0 +1,73 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.service;
+
+import com.sscs.kdb.dao.ExtorgDAOLocal;
+import com.sscs.kdb.dao.MainorgtypeDAOLocal;
+import com.sscs.kdb.dao.MainsectorDAOLocal;
+import com.sscs.kdb.dao.MainspecializationDAOLocal;
+import com.sscs.kdb.entity.Extorg;
+import com.sscs.kdb.entity.Mainorgtype;
+import com.sscs.kdb.entity.Mainsector;
+import com.sscs.kdb.entity.Mainspecialization;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
+/**
+ *
+ * @author Administrator
+ */
+@Stateless
+public class ExtorgService implements ExtorgServiceImpl {
+
+    @EJB
+    private MainspecializationDAOLocal mainspecializationDAO;
+    @EJB
+    private MainsectorDAOLocal mainsectorDAO;
+    @EJB
+    private MainorgtypeDAOLocal mainorgtypeDAO;
+    @EJB
+    private ExtorgDAOLocal extorgDAO;
+
+    @Override
+    public List<Mainspecialization> findAllMainspecialization() throws Exception {
+        return mainspecializationDAO.findAll();
+    }
+
+    @Override
+    public List<Mainsector> findAllMainsector() throws Exception {
+        return mainsectorDAO.findAll();
+    }
+
+    @Override
+    public List<Mainorgtype> findAllMainorgtype() throws Exception {
+        return mainorgtypeDAO.findAll();
+    }
+
+    @Override
+    public void createExtorg(Extorg extorg) throws Exception {
+        extorgDAO.create(extorg);
+    }
+
+    @Override
+    public Extorg findExtorg(Object id) throws Exception {
+        Extorg ex = extorgDAO.find(id);
+        ex.getExtorgsectorList().toString();
+        ex.getExtorgspecializationList().toString();
+        return ex;
+    }
+
+    @Override
+    public List<Extorg> findExtorgByPK(Extorg extorg) throws Exception {
+        List<Extorg> list = extorgDAO.findByPK(extorg);
+        for (int i = 0; i < list.size(); i++) {
+            Extorg ex = (Extorg) list.get(i);
+            ex.getExtorgsectorList().toString();
+            ex.getExtorgspecializationList().toString();
+        }
+        return list;
+    }
+}

@@ -1,0 +1,84 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Embeddable
+public class ConsultcertificationPK implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "ConsultID")
+    private String consultID;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "CertificationID")
+    private String certificationID;
+
+    public ConsultcertificationPK() {
+    }
+
+    public ConsultcertificationPK(String consultID, String certificationID) {
+        this.consultID = consultID;
+        this.certificationID = certificationID;
+    }
+
+    public String getConsultID() {
+        return consultID;
+    }
+
+    public void setConsultID(String consultID) {
+        this.consultID = consultID;
+    }
+
+    public String getCertificationID() {
+        return certificationID;
+    }
+
+    public void setCertificationID(String certificationID) {
+        this.certificationID = certificationID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (consultID != null ? consultID.hashCode() : 0);
+        hash += (certificationID != null ? certificationID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof ConsultcertificationPK)) {
+            return false;
+        }
+        ConsultcertificationPK other = (ConsultcertificationPK) object;
+        if ((this.consultID == null && other.consultID != null) || (this.consultID != null && !this.consultID.equals(other.consultID))) {
+            return false;
+        }
+        if ((this.certificationID == null && other.certificationID != null) || (this.certificationID != null && !this.certificationID.equals(other.certificationID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.ConsultcertificationPK[ consultID=" + consultID + ", certificationID=" + certificationID + " ]";
+    }
+    
+}

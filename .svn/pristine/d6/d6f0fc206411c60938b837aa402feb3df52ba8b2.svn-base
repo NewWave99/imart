@@ -1,0 +1,25 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.service;
+
+import com.sscs.kdb.controller.promain.Promain001Controller;
+import com.sscs.kdb.entity.Maindocumenttype;
+import com.sscs.kdb.entity.Projectdocument;
+import com.sscs.kdb.entity.Projectmain;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Adisor6
+ */
+@Local
+public interface PromainService {
+    List<Projectmain> findProjectMainAll() throws Exception;
+    List<Projectmain> findByCriteria(Projectmain projectmain) throws Exception;
+    
+    List<Maindocumenttype> findAllMainDocType() throws Exception;
+    List<Projectdocument> findProjectdocumentByCriteria(Projectdocument projectdocument) throws Exception;
+}

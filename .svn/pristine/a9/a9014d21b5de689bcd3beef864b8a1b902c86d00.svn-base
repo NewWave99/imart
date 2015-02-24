@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.entity.Mainspecialization;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Administrator
+ */
+@Local
+public interface MainspecializationDAOLocal {
+
+    void create(Mainspecialization mainspecialization) throws Exception;
+
+    void edit(Mainspecialization mainspecialization) throws Exception;
+
+    void remove(Mainspecialization mainspecialization) throws Exception;
+
+    Mainspecialization find(Object id) throws Exception;
+
+    List<Mainspecialization> findAll() throws Exception;
+
+    List<Mainspecialization> findRange(int[] range) throws Exception;
+
+    int count() throws Exception;
+}

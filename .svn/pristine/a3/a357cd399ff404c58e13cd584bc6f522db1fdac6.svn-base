@@ -1,0 +1,59 @@
+#Theme for wlma framework
+#aristo
+#black-tie
+#blitzer
+#bluesky
+#casablanca
+#cupertino
+#dark-hive
+#dot-luv
+#eggplant
+#excite-bike
+#flick
+#glass-x
+#home
+#hot-sneaks
+#humanity
+#le-frog
+#midnight
+#mint-choc
+#overcast
+#pepper-grinder
+#redmond
+#rocket
+#sam
+#smoothness
+#south-street
+#start
+#sunny
+#swanky-purse
+#trontastic
+#ui-darkness
+#ui-lightness
+#vader
+#bootstrap
+
+default_locale=en_US
+default_theme=ui-lightness
+#schedule N=no Y=yes
+schedule = N
+
+#websphere (192.168.170.138)
+#imagesPatch=http://192.168.170.138:9080/wlma-resources/images/
+#imagesDir=C:/Program Files/IBM/WebSphere/AppServer/profiles/profile1/installedApps/sscs-water1Node01Cell/kdb-resources_war.ear/kdb-resources.war/images/
+
+#glassfish (192.168.170.192)
+#imagesPatch=http://192.168.170.192:9080/wlma-resources/imagesWLMA
+#imagesDir=C:/glassfish3/glassfish/domains/domain1/applications/wlma-resources/imagesWLMA/
+
+#localhost
+imagesPatch=http://localhost:8080/kdb-resources/images/
+imagesDir=D:/WLMA 2.0/kdb-resources/web/images/
+barcodePatch=http://localhost:8080/kdb-resources/barcode/
+barcodeDir=D:/WLMA 2.0/kdb-resources/web/barcode/
+
+#192.168.1.10
+#imagesPatch=http://192.168.1.10/kdb-resources/images/
+#imagesDir=/opt/glassfish-3.1.2.2/glassfish/domains/domain1/applications/kdb-resources/images/
+#barcodePatch=http://192.168.1.10/kdb-resources/barcode/
+#barcodeDir=/opt/glassfish-3.1.2.2/glassfish/domains/domain1/applications/kdb-resources/barcode/

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:faces="http://www.springframework.org/schema/faces"
+       xmlns:int-security="http://www.springframework.org/schema/integration/security"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/integration/security 
+	http://www.springframework.org/schema/integration/security/spring-integration-security-2.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+	http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/faces http://www.springframework.org/schema/faces/spring-faces-2.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    
+    <context:component-scan base-package="com.aw.imart,org.springframework" />
+    <context:annotation-config />
+
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/imart"/>
+    </bean>
+
+    <!-- Hibernate Session faction -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">none</prop>
+                <prop key="hibernate.show_sql">false</prop>
+            </props>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>com.aw.imart.auth.bean.User</value>
+                <value>com.aw.imart.auth.bean.SecurityRole</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Resource Security -->
+    <sec:http access-denied-page="/access_denied.jsf">
+        <sec:form-login login-page="/login.jsf" default-target-url="/" />
+        
+        <sec:intercept-url pattern="/pages/**" access="ROLE_MANAGER,ROLE_ADMINISTRATOR,ROLE_SALES" />
+        <sec:intercept-url pattern="/default.jsf" access="ROLE_MANAGER,ROLE_ADMINISTRATOR,ROLE_SALES" />
+		
+        <sec:logout logout-success-url="/index.html" invalidate-session="true" />
+        
+        <sec:session-management invalid-session-url="/index.html" session-fixation-protection="none">
+            <sec:concurrency-control max-sessions="10" error-if-maximum-exceeded="true" />
+        </sec:session-management>
+        
+    </sec:http>
+
+
+    <!-- Business login method security -->
+    <sec:global-method-security
+        secured-annotations="enabled" jsr250-annotations="enabled">
+    </sec:global-method-security>
+
+
+    <bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+        <property name="userDetailsService" ref="userDetailsService" />
+    </bean>
+
+    <bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+        <property name="providers">
+            <list>
+                <ref local="daoAuthenticationProvider" />
+            </list>
+        </property>
+    </bean>
+
+    <sec:authentication-manager>
+        <sec:authentication-provider user-service-ref="userDetailsService">
+            <sec:password-encoder hash="md5" />
+        </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <!-- Automatically receives AuthenticationEvent messages -->
+    <bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener" />
+</beans>

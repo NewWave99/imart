@@ -1,0 +1,15 @@
+package com.sscs.kdb.auth.controller;
+
+import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
+
+@ManagedBean(name = "userAction")
+public class UserAction implements Serializable{
+
+    public UserAction() {
+    }
+
+    public String action(String action) {
+        return action;
+    }
+}

@@ -1,0 +1,32 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.service;
+
+import com.sscs.kdb.entity.Extorg;
+import com.sscs.kdb.entity.Mainorgtype;
+import com.sscs.kdb.entity.Mainsector;
+import com.sscs.kdb.entity.Mainspecialization;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Administrator
+ */
+@Local
+public interface ExtorgServiceImpl {
+
+    List<Mainspecialization> findAllMainspecialization() throws Exception;
+
+    List<Mainsector> findAllMainsector() throws Exception;
+
+    List<Mainorgtype> findAllMainorgtype() throws Exception;
+
+    void createExtorg(Extorg extorg) throws Exception;
+
+    Extorg findExtorg(Object id) throws Exception;
+
+    List<Extorg> findExtorgByPK(Extorg extorg) throws Exception;
+}

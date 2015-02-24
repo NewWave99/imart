@@ -1,0 +1,39 @@
+package com.sscs.kdb.common.util;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * @author MR Aekasit Sengnualnim (Aek) Senior Software Developer
+ *
+ * SSC Solutions Co., Ltd. 333 Lao Peng Nguan Tower 1, 27th A Floor,
+ * Viphavadee-Rangsit Road, Jomphol, Jatujak, Bangkok 10900 Thailand Tel :+66
+ * (0) 2618 8638-9 Fax :+66 (0) 2618 8640 Mobile : +66 8912 90006 Skype :
+ * s.aekasit Email : aekasit@tsoc.co.th / aekasit@sscs.co.th MSN :
+ * s.aekasit@hotmail.com http://www.sscs.co.th/
+ *
+ * @create 15-10-2012 2:39:42 PM
+ */
+public class FileLoader {
+
+    public static void loadFile(String filename) throws IOException {
+        FileInputStream fs = new FileInputStream(filename);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            System.out.println("" + line);
+        }
+    }
+    
+    public static void main(String[] args) {
+        try {
+            loadFile("C:\\db2admin.txt");
+        } catch (IOException ex) {
+            Logger.getLogger(FileLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}

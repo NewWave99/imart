@@ -1,0 +1,43 @@
+package com.sscs.kdb.common.bean;
+
+import com.sscs.kdb.entity.Extorg;
+
+public class DataTableBean {
+
+    private boolean check;
+    private int seq;
+    private String value;
+    private Extorg extorg;
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Extorg getExtorg() {
+        return extorg;
+    }
+
+    public void setExtorg(Extorg extorg) {
+        this.extorg = extorg;
+    }
+
+    public int getSeq() {
+        return seq;
+    }
+
+    public void setSeq(int seq) {
+        this.seq = seq;
+    }
+}

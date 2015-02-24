@@ -1,0 +1,95 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.product']}" actionListener="#{navigationController.nextPage('product/pro001')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.product.pro001.add']}" disabled="true"/>
+    </p:breadCrumb>
+    <p:focus context="content-layout"/>  
+    <p:panel id="content-layout" styleClass="margin">
+            <table style="width: 100%;"  border="0">
+                <tr>
+                    <td style="width: 22%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 20%"></td>
+                    <td style="width: 10%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 40%"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['productName']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputText value="#{product001Controller.productName}" styleClass="mandatory" style="width:280px;" maxlength="250"/>
+                    </td>
+                    <td></td>
+                    <td colspan="2" rowspan="6"  style="text-align: center;" valign="top">
+                        <h:graphicImage value="#{product001Controller.imgPath}" style="width: 200px;height: 200px;"/>
+                        <br/>
+                        <h:panelGroup layout="block">
+                          <p:commandButton value="#{app['productChoose']}"  action="#{navigationController.nextPage('product/pro001_upload')}" update="@(form)"/>
+                        </h:panelGroup>
+                    </td>
+                </tr>
+                 <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['productTypeName']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td colspan="2" >
+                        <p:selectOneMenu  value="#{product001Controller.productTypeID}" style="width: 200px;" styleClass="mandatory">  
+                            <f:selectItems value="#{comboController.productTypeList}" />  
+                        </p:selectOneMenu> 
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['productPrice']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td colspan="2" >
+                        <pe:inputNumber id="price" value="#{product001Controller.price}" styleClass="mandatory" style="text-align: right" >
+                            <p:ajax event="blur" update="price" partialSubmit="false" global="false" />  
+                        </pe:inputNumber>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['productAmount']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <pe:inputNumber id="amount" value="#{product001Controller.amount}"  styleClass="mandatory" style="text-align: right" >
+                            <p:ajax event="blur" update="amount" partialSubmit="false" global="false" />  
+                        </pe:inputNumber>
+                    </td>
+                </tr>
+                 <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['productDetail']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <p:inputTextarea value="#{product001Controller.productDesc}" style="width:300px;height:100px;" maxlength="480"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right"></td>
+                    <td ></td>
+                    <td >
+                        <br/>
+                        <h:panelGroup style="text-align: left;">
+                            <p:commandButton value="#{msg['btn.save']}" icon="icon-save"  action="#{product001Controller.update()}"  update="@(form)" />
+                            <p:commandButton value="#{msg['btn.cancel']}" icon="icon-cancel" action="#{navigationController.nextPage('product/pro001')}" update="@(form)" global="false"/>
+                        </h:panelGroup> 
+                    </td>
+                </tr>
+            </table>  
+    </p:panel>
+</ui:composition>

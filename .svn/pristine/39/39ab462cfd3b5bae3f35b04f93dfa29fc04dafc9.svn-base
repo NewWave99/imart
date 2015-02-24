@@ -1,0 +1,7 @@
+<div xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <div class="page-container">
+        <ui:insert name="content_container"/>
+    </div>
+
+</div>

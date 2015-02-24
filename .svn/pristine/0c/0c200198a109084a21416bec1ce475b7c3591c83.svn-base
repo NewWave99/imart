@@ -1,0 +1,69 @@
+package com.sscs.kdb.common.util;
+
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import javax.faces.context.FacesContext;
+
+public class MsgBundleLoader {
+
+    public static final String MESSAGE_PATH = "resources.messages";
+    public static final String APPLICATIONRESOURCES_PATH = "resources.ApplicationResources";
+    public static final String ERRORRESOURCES_PATH = "resources.ErrorResources";
+    public static final String CONFIG_PATH = "resources.config";
+    private static HashMap messageBundles = new HashMap();
+
+    public static String getMessageApplicationProperties(String key) {
+        try {
+            if (key == null) {
+                return null;
+            }
+            ResourceBundle messages = ResourceBundle.getBundle(APPLICATIONRESOURCES_PATH);
+            return messages.getString(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
+    public static String getConfigProperties(String key) {
+        try {
+            if (key == null) {
+                return null;
+            }
+            ResourceBundle messages = ResourceBundle.getBundle(CONFIG_PATH);
+            return messages.getString(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String getMessage(String key) {
+        try {
+            if (key == null) {
+                return null;
+            }
+            Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            ResourceBundle messages = ResourceBundle.getBundle(MESSAGE_PATH, locale);
+            if (messages == null) {
+                messages = ResourceBundle.getBundle(MESSAGE_PATH, locale);
+                messageBundles.put(locale.toString(), messages);
+            }
+            return messages.getString(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String getMessage(String key, String resourcePath) {
+        try {
+            if (key == null) {
+                return null;
+            }
+            Locale locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+            ResourceBundle messages = ResourceBundle.getBundle(resourcePath, locale);
+            return messages.getString(key);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+}

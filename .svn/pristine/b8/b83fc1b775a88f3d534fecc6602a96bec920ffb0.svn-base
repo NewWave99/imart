@@ -1,0 +1,84 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Embeddable
+public class BestpracticeprojectPK implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "BestPracticeID")
+    private String bestPracticeID;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "ProjectID")
+    private String projectID;
+
+    public BestpracticeprojectPK() {
+    }
+
+    public BestpracticeprojectPK(String bestPracticeID, String projectID) {
+        this.bestPracticeID = bestPracticeID;
+        this.projectID = projectID;
+    }
+
+    public String getBestPracticeID() {
+        return bestPracticeID;
+    }
+
+    public void setBestPracticeID(String bestPracticeID) {
+        this.bestPracticeID = bestPracticeID;
+    }
+
+    public String getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(String projectID) {
+        this.projectID = projectID;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (bestPracticeID != null ? bestPracticeID.hashCode() : 0);
+        hash += (projectID != null ? projectID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof BestpracticeprojectPK)) {
+            return false;
+        }
+        BestpracticeprojectPK other = (BestpracticeprojectPK) object;
+        if ((this.bestPracticeID == null && other.bestPracticeID != null) || (this.bestPracticeID != null && !this.bestPracticeID.equals(other.bestPracticeID))) {
+            return false;
+        }
+        if ((this.projectID == null && other.projectID != null) || (this.projectID != null && !this.projectID.equals(other.projectID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.BestpracticeprojectPK[ bestPracticeID=" + bestPracticeID + ", projectID=" + projectID + " ]";
+    }
+    
+}

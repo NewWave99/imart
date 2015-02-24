@@ -1,0 +1,351 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.controller.extorg;
+
+import com.sscs.kdb.common.bean.DataTableBean;
+import com.sscs.kdb.controller.MethodController;
+import com.sscs.kdb.controller.NavigationController;
+import com.sscs.kdb.controller.UserInfoController;
+import com.sscs.kdb.service.ExtorgService;
+import com.sscs.kdb.service.SystemService;
+import java.io.Serializable;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
+import org.primefaces.model.DualListModel;
+
+/**
+ *
+ * @author Administrator
+ */
+@ManagedBean(name = "extorgController")
+@SessionScoped
+public class ExtorgController implements Serializable {
+
+    private UserInfoController userInfo;
+    private NavigationController navigationController;
+    @EJB
+    private SystemService systemService;
+    @EJB
+    private ExtorgService extorgService;
+    private boolean check;
+    private String mode;
+    private String orgTypeIdS;
+    private String companyNameTHS;
+    private String extConId;
+    private String orgTypeId;
+    private List<SelectItem> orgTypeIdList;
+    private String companyNameTH;
+    private String companyNameEN;
+    private String shortDesc;
+    private String houseNo;
+    private String towerName;
+    private String floorNo;
+    private String road;
+    private String moo;
+    private String district;
+    private String amphur;
+    private String province;
+    private String postcode;
+    private String country;
+    private String tel;
+    private String fax;
+    private String webSite;
+    private String emailAddress;
+    private String mobilePhone;
+    private String contactPerson;
+    private String contactMobilePhone;
+    private DualListModel<SelectItem> extOrgSector;
+    private DualListModel<SelectItem> extOrgSpecialization;
+    private List<DataTableBean> dataList;
+
+    @PostConstruct
+    public void init() throws Exception {
+        
+    }
+
+    public void findAll() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void find() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void insert() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void update() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void delete() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void cancel() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void reportPDF() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void reportExcel() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public UserInfoController getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfoController userInfo) {
+        this.userInfo = userInfo;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    public String getOrgTypeIdS() {
+        return orgTypeIdS;
+    }
+
+    public void setOrgTypeIdS(String orgTypeIdS) {
+        this.orgTypeIdS = orgTypeIdS;
+    }
+
+    public String getCompanyNameTHS() {
+        return companyNameTHS;
+    }
+
+    public void setCompanyNameTHS(String companyNameTHS) {
+        this.companyNameTHS = companyNameTHS;
+    }
+
+    public String getExtConId() {
+        return extConId;
+    }
+
+    public void setExtConId(String extConId) {
+        this.extConId = extConId;
+    }
+
+    public String getOrgTypeId() {
+        return orgTypeId;
+    }
+
+    public void setOrgTypeId(String orgTypeId) {
+        this.orgTypeId = orgTypeId;
+    }
+
+    public List<SelectItem> getOrgTypeIdList() {
+        return orgTypeIdList;
+    }
+
+    public void setOrgTypeIdList(List<SelectItem> orgTypeIdList) {
+        this.orgTypeIdList = orgTypeIdList;
+    }
+
+    public String getCompanyNameTH() {
+        return companyNameTH;
+    }
+
+    public void setCompanyNameTH(String companyNameTH) {
+        this.companyNameTH = companyNameTH;
+    }
+
+    public String getCompanyNameEN() {
+        return companyNameEN;
+    }
+
+    public void setCompanyNameEN(String companyNameEN) {
+        this.companyNameEN = companyNameEN;
+    }
+
+    public String getShortDesc() {
+        return shortDesc;
+    }
+
+    public void setShortDesc(String shortDesc) {
+        this.shortDesc = shortDesc;
+    }
+
+    public String getHouseNo() {
+        return houseNo;
+    }
+
+    public void setHouseNo(String houseNo) {
+        this.houseNo = houseNo;
+    }
+
+    public String getTowerName() {
+        return towerName;
+    }
+
+    public void setTowerName(String towerName) {
+        this.towerName = towerName;
+    }
+
+    public String getFloorNo() {
+        return floorNo;
+    }
+
+    public void setFloorNo(String floorNo) {
+        this.floorNo = floorNo;
+    }
+
+    public String getRoad() {
+        return road;
+    }
+
+    public void setRoad(String road) {
+        this.road = road;
+    }
+
+    public String getMoo() {
+        return moo;
+    }
+
+    public void setMoo(String moo) {
+        this.moo = moo;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getAmphur() {
+        return amphur;
+    }
+
+    public void setAmphur(String amphur) {
+        this.amphur = amphur;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getMobilePhone() {
+        return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
+    }
+
+    public String getContactMobilePhone() {
+        return contactMobilePhone;
+    }
+
+    public void setContactMobilePhone(String contactMobilePhone) {
+        this.contactMobilePhone = contactMobilePhone;
+    }
+
+    public DualListModel<SelectItem> getExtOrgSector() {
+        return extOrgSector;
+    }
+
+    public void setExtOrgSector(DualListModel<SelectItem> extOrgSector) {
+        this.extOrgSector = extOrgSector;
+    }
+
+    public DualListModel<SelectItem> getExtOrgSpecialization() {
+        return extOrgSpecialization;
+    }
+
+    public void setExtOrgSpecialization(DualListModel<SelectItem> extOrgSpecialization) {
+        this.extOrgSpecialization = extOrgSpecialization;
+    }
+
+    public List<DataTableBean> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<DataTableBean> dataList) {
+        this.dataList = dataList;
+    }
+}

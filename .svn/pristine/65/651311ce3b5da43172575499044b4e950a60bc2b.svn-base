@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <f:view id="main_view" encoding="UTF-8" contentType="text/html" locale="#{localeController.locale}">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            
+             <f:event type="preRenderView" listener="#{loginController.checkLogin}"/> 
+            
+            <link href="#{request.contextPath}/resources/css/default.css" rel="stylesheet" type="text/css" />
+            <link href="#{request.contextPath}/resources/css/layout.css" rel="stylesheet" type="text/css" />
+
+            <title>
+                <ui:insert name="title">
+                    <h:outputText value="Default Title"/>
+                </ui:insert>
+            </title>
+
+        </h:head>
+
+        <h:body>
+
+
+            <div id="script">
+                <ui:insert name="header">
+                    <ui:include src="/WEB-INF/inc-content/script.xhtml"/>
+                </ui:insert>
+            </div>
+
+            <div id="header" class="ui-state-default">
+                <ui:insert name="header">
+                    <ui:include src="/WEB-INF/inc-content/none-header.xhtml"/>
+                </ui:insert>
+            </div>
+
+            <div id="main-container">
+                <br/>
+                <div id="content" class="login-content">
+                    <ui:insert name="content">Content</ui:insert>
+                </div>
+
+                <div id="footer">
+                    <ui:insert name="footer">
+                        <ui:include src="/WEB-INF/inc-content/footer.xhtml"/>
+                    </ui:insert>
+                </div>
+
+            </div>
+
+        </h:body>
+    </f:view>
+</html>

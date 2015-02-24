@@ -1,0 +1,25 @@
+package com.sscs.kdb.controller;
+
+import com.sscs.kdb.common.util.JsfUtil;
+
+/**
+ *
+ * @author Aekasit
+ */
+public abstract class PageActionController {
+
+    public void openEditPage(String page) {
+        NavigationController obj = (NavigationController) JsfUtil.getManagedBean(NavigationController.CONTROLLER_NAME);
+        obj.nextPage(page);
+    }
+
+    public void openViewPage(String page) {
+        NavigationController obj = (NavigationController) JsfUtil.getManagedBean(NavigationController.CONTROLLER_NAME);
+        obj.nextPage(page);
+    }
+
+    public void openCreatePage(String page) {
+        NavigationController obj = (NavigationController) JsfUtil.getManagedBean(NavigationController.CONTROLLER_NAME);
+        obj.nextPage(page);
+    }
+}

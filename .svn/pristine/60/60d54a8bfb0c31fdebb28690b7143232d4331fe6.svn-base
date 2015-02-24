@@ -1,0 +1,68 @@
+package com.sscs.kdb.reportbean;
+
+public class PUR001ReportBean {
+
+    private String seq;
+    private String proCode;
+    private String proDetail;
+    private String proQty;
+    private String proTotalWeight;
+    private String proUnitPrice;
+    private String proAmount;
+
+    public String getSeq() {
+        return seq;
+    }
+
+    public void setSeq(String seq) {
+        this.seq = seq;
+    }
+
+    public String getProCode() {
+        return proCode;
+    }
+
+    public void setProCode(String proCode) {
+        this.proCode = proCode;
+    }
+
+    public String getProDetail() {
+        return proDetail;
+    }
+
+    public void setProDetail(String proDetail) {
+        this.proDetail = proDetail;
+    }
+
+    public String getProQty() {
+        return proQty;
+    }
+
+    public void setProQty(String proQty) {
+        this.proQty = proQty;
+    }
+
+    public String getProTotalWeight() {
+        return proTotalWeight;
+    }
+
+    public void setProTotalWeight(String proTotalWeight) {
+        this.proTotalWeight = proTotalWeight;
+    }
+
+    public String getProUnitPrice() {
+        return proUnitPrice;
+    }
+
+    public void setProUnitPrice(String proUnitPrice) {
+        this.proUnitPrice = proUnitPrice;
+    }
+
+    public String getProAmount() {
+        return proAmount;
+    }
+
+    public void setProAmount(String proAmount) {
+        this.proAmount = proAmount;
+    }
+}

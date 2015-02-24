@@ -1,0 +1,17 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="ฐานข้อมูลองค์กรภายนอก" disabled="true"/>
+    </p:breadCrumb>
+    <p:panel id="content-search" styleClass="margin">
+        
+    </p:panel>
+        
+    <h:panelGroup style="text-align: left;">
+        <p:commandButton value="#{msg['btn.add']}" icon="icon-add" action="#{extorgController.insert()}" update="@(form)" global="false"/>
+    </h:panelGroup>
+</ui:composition>

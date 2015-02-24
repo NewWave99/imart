@@ -1,0 +1,110 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.invoice']}" disabled="true"/>
+    </p:breadCrumb>
+    <p:panel styleClass="margin">
+        <table style="width: 100%;">
+            <tr>
+                <td >
+                 <p:panel id="content4" styleClass="margin" >
+                     <table style="width: 100%;" border="0">
+                        <tr>
+                            <td style="width: 15%;"></td>
+                            <td style="width: 2%"></td>
+                            <td style="width: 30%"></td>
+                            <td style="width: 12%;"></td>
+                            <td style="width: 2%"></td>
+                            <td style="width: 28%"></td>
+                            <td style="width: 10%"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;">
+                              <h:outputText value="#{app['invoiceNo']}" styleClass="lbl_bold"/>
+                            </td>
+                            <td ></td>
+                            <td >
+                                <p:inputText  value="#{invoice001Controller.shippingID}" />  
+                            </td>
+                            <td />
+                            <td />
+                            <td />
+                         </tr>
+                         <tr>
+                            <td style="text-align: right;">
+                               <h:outputText value="#{app['name']}" styleClass="lbl_bold"/>
+                            </td>
+                            <td ></td>
+                            <td >
+                                <p:inputText value="#{invoice001Controller.fristName}" />
+                                <p:spacer width="8" height="8" />
+                                <p:inputText value="#{invoice001Controller.lastName}" />
+                            </td>
+                            <td></td>
+                            <td ></td>
+                            <td >
+                              <p:commandButton value="#{msg['btn.search']}" action="#{invoice001Controller.findByCriteria()}" icon="icon-search" update="@(form)"/>
+                            </td>
+                        </tr>
+                     </table>
+                    </p:panel>
+                    <p:panel id="customer_list" styleClass="margin">
+                        <p:dataTable id="itemDetail" var="items" value="#{invoice001Controller.dataList}" binding="#{datatableController.defaultDataTable}" emptyMessage="">
+                            <p:column headerText="" style="text-align: center;width: 5%">
+                                <h:outputText value="#{items.seq}"/>
+                            </p:column>
+                            <p:column headerText="#{app['orderDate']}" style="width: 15%">
+                                <div align="left"> 
+                                    <h:outputText value="#{items.shipping.shippingDate}" styleClass="lbl_bold" style="color:red">
+                                       <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                                   </h:outputText>
+                                </div>
+                            </p:column>
+
+                            <p:column headerText="#{app['invoiceNo']}" style="width: 15%">
+                                <div align="left"> 
+                                   <h:outputText value="#{items.shipping.shippingID}"/>
+                                </div>
+                            </p:column>
+                            
+                            <p:column headerText="#{app['name']}" style="width: 30%">
+                                <div align="left"> 
+                                   <h:outputText value="#{items.shipping.name}"/>
+                                   <p:spacer width="8" height="8" />
+                                   <h:outputText value="#{items.shipping.lastName}"/>
+                                </div>
+                            </p:column>
+                            
+                            <p:column headerText="#{app['priceTotal']}" style="width: 15%">
+                              <div align="right">  
+                                <h:outputText value="#{items.shippingPriceNet}" class="lbl_bold" style="color: red;">
+                                    <f:convertNumber pattern="฿ #,##0.00'.-'" locale="th_TH"/>
+                                </h:outputText>
+                              </div>
+                            </p:column>
+                            
+                            <p:column headerText="#{app['paymentStatus']}" style="width: 23%">
+                                <div align="left"> 
+                                  <p:spacer width="8" height="8" />
+                                  <h:outputText value="#{app['paymentWait']}" rendered="#{items.shipping.shippingStatus == 1}"/>
+                                  <h:outputText value="#{app['paymentfiled']}" rendered="#{items.shipping.shippingStatus == 2}"/>
+                                  <h:outputText value="#{app['paymentComplete']}" rendered="#{items.shipping.shippingStatus == 3}"/>
+                                </div>
+                            </p:column>
+
+                            <p:column headerText="" style="text-align: center;width: 14%;">
+                                <p:commandButton value="#{msg['btn.report']}" icon="icon-report" action="#{invoice001Controller.reportPDF()}" update="@(form)" ajax="false" >
+                                    <f:setPropertyActionListener value="#{items.shipping}" target="#{invoice001Controller.shipping}" />  
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </td>
+            </tr>
+        </table>
+    </p:panel>
+</ui:composition>

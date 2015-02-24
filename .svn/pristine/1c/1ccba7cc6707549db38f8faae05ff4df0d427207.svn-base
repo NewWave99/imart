@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.entity.AuthLog;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Aekasit
+ */
+@Local
+public interface AuthLogFacadeLocal {
+
+    void create(AuthLog authLog) throws Exception;
+
+    void edit(AuthLog authLog) throws Exception;
+
+    void remove(AuthLog authLog) throws Exception;
+
+    AuthLog find(Object id) throws Exception;
+
+    List<AuthLog> findAll() throws Exception;
+
+    List<AuthLog> findRange(int[] range) throws Exception;
+
+    int count() throws Exception;
+}

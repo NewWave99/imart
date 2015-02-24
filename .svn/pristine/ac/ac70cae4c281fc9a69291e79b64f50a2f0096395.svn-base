@@ -1,0 +1,8 @@
+package com.sscs.kdb.auth.session;
+
+import com.sscs.kdb.auth.bean.User;
+
+public interface UserDetailsFacadeLocal {
+
+    User findByUsername(String username);
+}

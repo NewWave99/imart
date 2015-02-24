@@ -1,0 +1,149 @@
+<ui:composition id="footer" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html">
+
+    <script type="text/javascript">
+        //<![CDATA[
+        PrimeFaces.locales ['en_US'] = {
+            closeText: 'Close',
+            prevText: 'Previous',
+            nextText: 'Next',
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
+            monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ],
+            dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            dayNamesShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Tue', 'Fri', 'Sat'],
+            dayNamesMin: ['S', 'M', 'T', 'W ', 'T', 'F ', 'S'],
+            weekHeader: 'Week',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix:'',
+            isBuddhist: false,
+            timeOnlyTitle: 'Only Time',
+            timeText: 'Time',
+            hourText: 'Time',
+            minuteText: 'Minute',
+            secondText: 'Second',
+            currentText: 'Current Date',
+            ampm: false,
+            month: 'Month',
+            week: 'week',
+            day: 'Day',
+            allDayText: 'All Day'
+        }; 
+        
+        PrimeFaces.locales ['th_TH'] = {
+            closeText: 'ปิด',
+            prevText: 'ก่อนหน้า',
+            nextText: 'ถัดไป',
+            monthNames: ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม' ],
+            monthNamesShort: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ษ.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.' ],
+            dayNames: ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัส', 'ศุกร์', 'เสาร์'],
+            dayNamesShort: ['อา','จ','อ','พ','พฤ','ศ','ส'],
+            dayNamesMin: ['อา','จ','อ','พ','พฤ','ศ','ส'],
+            weekHeader: 'สัปดาห์',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix:'',
+            isBuddhist: true,
+            timeOnlyTitle: 'เฉพาะเวลา',
+            timeText: 'เวลา',
+            hourText: 'เวลา',
+            minuteText: 'นาที',
+            secondText: 'วินาที',
+            currentText: 'ปัจจุบัน',
+            ampm: false,
+            month: 'เดือน',
+            week: 'สัปดาห์',
+            day: 'วัน',
+            allDayText: 'ทั้งวัน'
+        };
+            
+        //]]>
+    </script>
+
+    <script src="http://maps.google.com/maps/api/js?sensor=true&amp;v=3.4" type="text/javascript"></script>
+
+    <p:growl id="default_msg" showDetail="true"/>
+
+    <pe:importConstants className="com.sscs.kdb.common.constants.Constants" var="Constants" />
+
+    <p:idleMonitor onidle="sessionTimeOutDialog.show();" timeout="#{session.maxInactiveInterval * 1000}" />
+
+    <p:dialog   widgetVar="sessionTimeOutDialog"
+                modal="true"
+                closable="false"
+                resizable="flase"
+                draggable="false"
+                showHeader="false"
+                width="260"
+                height="110"
+                visible="false">
+
+        <table width="100%" border="0" cellpadding="2" cellspacing="0">
+            <tr>
+                <td align="center">
+                    <h:outputText style="font-weight: bold" value="#{msg['session-expire.title']}" />
+                </td>
+            </tr>
+            <tr><td>
+                    <h:outputText value="#{msg['session-expire.detail']}" />
+                </td>
+            </tr>
+            <tr><td align="center">
+                    <input id="confirm_backtologin" type="button" value="#{msg['session-expire.reload']}"
+                           onclick="window.location='#{facesContext.externalContext.requestContextPath}';"/>
+                </td>
+            </tr>
+        </table>
+
+    </p:dialog>
+
+
+    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>  
+
+    <p:dialog modal="true" widgetVar="statusDialog" header="Loading..."
+              draggable="false" closable="false" resizable="false">
+        <p:graphicImage value="/resources/images/ajaxloadingbar.gif" />  
+    </p:dialog>
+
+    <pe:tooltip global="true"/>
+
+    <pe:ajaxErrorHandler type="javax.faces.application.ViewExpiredException" button="Reload"  
+                         buttonOnclick="document.location.href=document.location.href;"  
+                         body="Due to inactivity on page please push RELOAD to continue." title="Page expired ..."/>
+
+    <pe:ajaxErrorHandler type="java.lang.IllegalStateException" button="Close warning!">  
+        <f:facet name="title">  
+            Error <span style="color: red;">{error-name}</span>
+        </f:facet>  
+        <f:facet name="body">  
+            <div>  
+                <h:form>  
+                    <p:tabView >  
+                        <p:tab title="Message">  
+                            <h:panelGrid columns="2">  
+                                <h:outputLabel value="Error message:" />  
+                                <h:outputText value="{error-message}" style="font-size: 1.2em;color:navy;" />  
+
+                                <h:outputLabel value="Server name:" />  
+                                <h:outputText value="{error-hostname}"  style="font-size: 1.2em;color:navy;"/>  
+                            </h:panelGrid>  
+
+                        </p:tab>  
+                        <p:tab title="Detail">  
+                            <div style="overflow: auto; height: 300px; width: 700px;">  
+                                {error-stacktrace}  
+                            </div>  
+                        </p:tab>  
+                    </p:tabView>  
+                </h:form>  
+            </div>  
+        </f:facet>  
+    </pe:ajaxErrorHandler>
+
+</ui:composition>

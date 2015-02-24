@@ -1,0 +1,73 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.user.u001']}" disabled="true"/>
+    </p:breadCrumb>
+    <p:panel styleClass="margin">
+        <table style="width: 100%;">
+            <tr>
+                <td >
+                    <h:panelGroup id="u001_panelGroup" layout="block">
+                        <p:dataTable id="itemDetail" var="item" value="#{u001Controller.dataList}" binding="#{datatableController.defaultDataTable}" emptyMessage="">
+
+                            <p:column headerText="" style="text-align: center;width: 5%">
+                                <f:facet name="header">  
+                                    <p:selectBooleanCheckbox value="#{u001Controller.check}"> 
+                                        <p:ajax listener="#{u001Controller.selectAll()}" update="itemDetail" global="false"/>
+                                    </p:selectBooleanCheckbox> 
+                                </f:facet>  
+                                <p:selectBooleanCheckbox value="#{item.check}" />  
+                            </p:column>
+
+                            <p:column headerText="#{app['userCode']}" style="text-align: center;">
+                                <h:outputText value="#{item.authUser.userId}"  />
+                            </p:column>
+
+                            <p:column headerText="#{app['userName']}" >
+                                <h:outputText value="#{item.authUser.username}" />
+                            </p:column>
+
+                            <p:column headerText="#{app['firstName']}">
+                                <h:outputText value="#{item.authUser.firstName}"/>
+                            </p:column>
+
+                            <p:column headerText="#{app['lastName']}">
+                                <h:outputText value="#{item.authUser.lastName}"/>
+                            </p:column>
+
+                            <p:column headerText="#{app['userRole']}">
+                                <h:outputText value="#{item.authUser.authUserRole.roleName}"/>
+                            </p:column>
+
+                            <p:column headerText="" style="text-align: center;width: 10%;">
+                                <p:commandButton value="#{msg['btn.edit']}" icon="icon-edit" action="#{u001Controller.find()}" update="@(form)" >
+                                    <f:setPropertyActionListener value="#{item.authUser}" target="#{u001Controller.authUser}" />  
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
+                </td>
+            </tr>
+        </table>
+    </p:panel>
+    <p:panel styleClass="margin">
+        <p:commandButton value="#{msg['btn.add']}" icon="icon-add" action="#{u001Controller.insert()}" update="@(form)" global="false"/>
+        <p:commandButton value="#{msg['btn.delete']}" icon="icon-delete" oncomplete="confirm_u001_dialog.show()" update="@(form)" global="false"/>
+    </p:panel>
+    <p:confirmDialog id="confirmU001_dialog" message="#{msg['site.dialog.confirm']}"
+                     header="#{msg['application.title']}"
+                     severity="alert" 
+                     widgetVar="confirm_u001_dialog">
+        <h:panelGroup layout="block" style="text-align: center">
+            <p:commandButton id="confirm_u001" icon="icon-ok" global="false"
+                             value="#{msg['btn.ok']}" update="u001_panelGroup" 
+                             oncomplete="confirm_u001_dialog.hide()" 
+                             action="#{u001Controller.delete()}"/>  
+            <p:commandButton id="decline_u001" icon="icon-cancel" value="#{msg['btn.cancel']}" onclick="confirm_u001_dialog.hide()" type="button" global="false"/>
+        </h:panelGroup>
+    </p:confirmDialog>
+</ui:composition>

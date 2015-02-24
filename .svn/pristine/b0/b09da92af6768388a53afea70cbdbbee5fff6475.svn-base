@@ -1,0 +1,31 @@
+package com.sscs.kdb.controller;
+
+import com.sscs.kdb.common.constants.Constants;
+import java.io.Serializable;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import org.primefaces.component.datatable.DataTable;
+
+@ManagedBean(name = "datatableController")
+@SessionScoped
+public class DatatableController implements Serializable {
+
+    public static final String BEAN_NAME = "datatableController";
+    private DataTable defaultDataTable;
+
+    public DataTable getDefaultDataTable() {
+        defaultDataTable = new DataTable();
+        defaultDataTable.setRows(10);
+        defaultDataTable.setPaginator(true);
+        defaultDataTable.setPaginatorPosition(Constants.DATATABLE_PAGINATOR_POSITION);
+        defaultDataTable.setPaginatorTemplate(Constants.DATATABLE_PAGINATOR_TEMPLATE);
+        defaultDataTable.setRowsPerPageTemplate(Constants.DATATABLE_ROWS_PER_PAGE_TEMPLATE);
+        defaultDataTable.setRowIndexVar(Constants.DATATABLE_ROW_INDEX_VAR);
+        defaultDataTable.setEmptyMessage("");
+        return defaultDataTable;
+    }
+
+    public void setDefaultDataTable(DataTable defaultDataTable) {
+        this.defaultDataTable = defaultDataTable;
+    }
+}

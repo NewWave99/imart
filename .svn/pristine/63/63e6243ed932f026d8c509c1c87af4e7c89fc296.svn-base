@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:form id="navigation_form">
+
+        <p:menubar rendered="true" style="font-size: 12px; padding:0px;border:0px;" autoDisplay="false">
+
+            <p:menuitem icon="icon-home" value="#{msg['menu.home']}" global="false" actionListener="#{navigationController.nextPage('dashboard', 'dashboardController.init()')}" update="@(form)"/>
+
+            <p:menuitem icon="icon-archives" value="ฐานข้อมูลโครงการ" global="false" actionListener="#{navigationController.nextPage('promain/main001', 'u001Controller.init()')}" update="@(form)"/>
+
+            <p:menuitem icon="icon-photo_album" value="ฐานข้อมูล Best Practice" global="false" actionListener="#{navigationController.nextPage('dashboard', 'dashboardController.init()')}" update="@(form)"/>
+
+            <p:menuitem icon="icon-database" value="ฐานข้อมูลที่ปรึกษาและผู้เชี่ยวชาญ" global="false" actionListener="#{navigationController.nextPage('dashboard', 'dashboardController.init()')}" update="@(form)"/>
+
+            <p:menuitem icon="icon-drawer" value="ฐานข้อมูลองค์กรภายนอก" global="false" actionListener="#{navigationController.nextPage('extorg/extorg', 'extorgController.init()')}" update="@(form)"/>
+            
+            <p:menuitem icon="icon-person" value="#{msg['menu.user']}" global="false" actionListener="#{navigationController.nextPage('user/u001', 'u001Controller.init()')}" update="@(form)"/>
+
+        </p:menubar>  
+
+    </h:form>
+</ui:composition>

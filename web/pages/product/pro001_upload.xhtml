@@ -1,0 +1,74 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.product']}" actionListener="#{navigationController.nextPage('product/pro001')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.product.pro001.add']}" rendered="#{product001Controller.mode=='A'}" actionListener="#{navigationController.nextPage('product/pro001_add')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.product.pro001.edit']}" rendered="#{product001Controller.mode=='U'}" actionListener="#{navigationController.nextPage('product/pro001_edit')}" update="@(form)" global="false"/>
+        <p:menuitem value="#{msg['menu.product.pro001.upload']}" disabled="true"/>
+    </p:breadCrumb>
+    <p:focus context="content-layout"/>  
+    <p:panel id="content-layout" styleClass="margin">
+            <table style="width: 100%;"  border="0">
+                <tr>
+                    <td style="width: 22%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 20%"></td>
+                    <td style="width: 10%;"></td>
+                    <td style="width: 2%"></td>
+                    <td style="width: 40%"></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['productName']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td >
+                        <h:outputText value="#{product001Controller.productName}" />
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">
+                        <h:outputText value="#{app['productTypeName']}" styleClass="lbl_bold"/>
+                    </td>
+                    <td ></td>
+                    <td colspan="2" >
+                        <p:selectOneMenu  value="#{product001Controller.productTypeID}" style="width: 200px;" styleClass="mandatory">  
+                            <f:selectItems value="#{comboController.productTypeList}" />  
+                        </p:selectOneMenu> 
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6"   style="text-align: center;" valign="top">
+                        <br/>
+                        <h:graphicImage value="#{product001Controller.imgPath}" style="width: 200px;height: 200px;"/>
+                        <br/>
+                         <h:panelGroup layout="block">
+                            <p:fileUpload value="#{product001Controller.file}" style="size: 50px;" mode="simple" sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>  
+                            <p:commandButton value="#{msg['btn.upload']}" icon="icon-upload"  ajax="false"  actionListener="#{product001Controller.upload()}"/>
+                        </h:panelGroup>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6"><br/></td>
+                </tr>
+                 <tr>
+                    <td colspan="6" style="text-align: center">
+                        <br/>
+                        <h:panelGroup rendered="#{product001Controller.mode=='A'}" style="text-align: center;" >
+                             <p:commandButton value="#{msg['btn.ok']}" icon="icon-ok" action="#{navigationController.nextPage('product/pro001_add')}" update="@(form)"/>
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{product001Controller.mode=='U'}" style="text-align: center;">
+                             <p:commandButton value="#{msg['btn.ok']}" icon="icon-ok" action="#{navigationController.nextPage('product/pro001_edit')}" update="@(form)"/>
+                        </h:panelGroup>
+                    </td>
+                </tr>
+                
+            </table>  
+    </p:panel>
+    
+</ui:composition>

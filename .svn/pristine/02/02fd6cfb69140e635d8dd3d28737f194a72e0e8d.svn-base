@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.entity.Extorgspecialization;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Administrator
+ */
+@Local
+public interface ExtorgspecializationDAOLocal {
+
+    void create(Extorgspecialization extorgspecialization) throws Exception;
+
+    void edit(Extorgspecialization extorgspecialization) throws Exception;
+
+    void remove(Extorgspecialization extorgspecialization) throws Exception;
+
+    Extorgspecialization find(Object id) throws Exception;
+
+    List<Extorgspecialization> findAll() throws Exception;
+
+    List<Extorgspecialization> findRange(int[] range) throws Exception;
+
+    int count() throws Exception;
+}

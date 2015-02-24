@@ -1,0 +1,92 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.common.util.DateTimeUtil;
+import com.sscs.kdb.common.util.StringUtil;
+import com.sscs.kdb.controller.promain.Promain001Controller;
+import com.sscs.kdb.entity.Maindocumenttype;
+import com.sscs.kdb.entity.Projectdocument;
+import com.sscs.kdb.entity.Projectmain;
+import java.util.List;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+/**
+ *
+ * @author Adisor6
+ */
+@Stateless
+public class ProjectmainDAO extends AbstractFacade<Projectmain> implements ProjectmainFacadeDAOLocal {
+    @PersistenceContext(unitName = "kdb-warPU")
+    private EntityManager em;
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+
+    public ProjectmainDAO() {
+        super(Projectmain.class);
+    }
+    
+    @Override
+    public List<Projectmain> findAll() throws Exception {
+        Query q = em.createQuery("select o from Projectmain o ");
+        return q.getResultList();
+    }
+
+    
+//    if (dateFrom != null) {
+//            sb.append(" and o.purDate >= '").append(DateTimeUtil.dateToString(dateFrom, DateTimeUtil.PATTERN_DB)).append(DateTimeUtil.SELECT_FROM_TIME).append("'");
+//        }
+//        if (dateTo != null) {
+//            sb.append(" and o.purDate <= '").append(DateTimeUtil.dateToString(dateTo, DateTimeUtil.PATTERN_DB)).append(DateTimeUtil.SELECT_TO_TIME).append("'");
+//        }
+    @Override
+    public List<Projectmain> findByCriteria(Projectmain projectmain) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        boolean flag=false;
+        sb.append("select o from Projectmain o ");
+        if (StringUtil.isNotNullOrNotEmpty(projectmain.getProjectName())) {
+            sb.append("where o.projectName like '").append(projectmain.getProjectName()).append("%' ");
+            flag=true;
+        }
+        if (StringUtil.isNotNullOrNotEmpty(projectmain.getStartDate())) {
+            sb.append((flag)?" and ":"where");
+            sb.append(" o.startDate >= '").append(DateTimeUtil.dateToString(projectmain.getStartDate(), DateTimeUtil.PATTERN_DB)).append(DateTimeUtil.SELECT_FROM_TIME).append("'");
+            flag=true; 
+        } 
+        if (StringUtil.isNotNullOrNotEmpty(projectmain.getCustomerName())) {
+            sb.append((flag)?" and ":"where");
+            sb.append(" o.customerName like '").append(projectmain.getCustomerName()).append("%' ");
+        }
+        Query q = em.createQuery(sb.toString());
+        return q.getResultList();
+    }
+
+    @Override
+    public List<Maindocumenttype> findAllMainDocType() throws Exception {
+       Query q = em.createQuery("select o from Maindocumenttype o ");
+       return q.getResultList();
+    }
+
+    @Override
+    public List<Projectdocument> findProjectdocumentByCriteria(Projectdocument projectdocument) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select o from Projectdocument o  where o.projectID ='").append(projectdocument.getProjectID()).append("' ");
+        if (StringUtil.isNotNullOrNotEmpty(projectdocument.getDocName())) {
+            sb.append("and o.docName like '").append(projectdocument.getDocName()).append("%' ");
+        }
+        if (StringUtil.isNotNullOrNotEmpty(projectdocument.getDocTypeID())) {
+            sb.append("and o.docTypeID.docTypeID = '").append(projectdocument.getDocTypeID().getDocTypeID()).append("' ");
+        } 
+
+        Query q = em.createQuery(sb.toString());
+        return q.getResultList();
+    }
+}

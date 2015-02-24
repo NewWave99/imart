@@ -1,0 +1,62 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:breadCrumb>
+        <p:menuitem value="#{msg['menu.home']}" icon="icon-home" actionListener="#{navigationController.nextPage('dashboard')}" update="@(form)" global="false"/>
+        <p:menuitem value="ฐานข้อมูลโครงการ" disabled="true"/>
+    </p:breadCrumb>
+    <p:panel styleClass="margin">
+        <table style="width: 100%;">
+            <tr>
+                <td >
+                    <p:panel id="content-search" styleClass="margin">
+                        <h:panelGrid columns="5" style="width: 100%;">
+                            <h:outputText value="ชื่อโครงการ" styleClass="lbl_bold"/>
+                            <p:inputText value="#{promain001Controller.projectName_Search}" style="width: 300px;"/>
+                            <h:outputText value="" styleClass="lbl_bold"/>
+                            <h:outputText value="" styleClass="lbl_bold"/>
+                            <h:outputText value="" styleClass="lbl_bold"/>
+                            <h:outputText value="วันที่เริ่มโครงการ" styleClass="lbl_bold"/>
+                            <p:calendar value="#{promain001Controller.starDate_Search}" navigator="true" size="12" showOn="button" pattern="dd/MM/yyyy"/>
+                            <h:outputText value="ลูกค้า" styleClass="lbl_bold"/>
+                            <p:inputText value="#{promain001Controller.customerName_Search}" style="width: 300px;"/>
+                            <p:commandButton value="#{msg['btn.search']}" icon="icon-search" action="#{promain001Controller.findByCriteria()}" update="@(form)" global="false"/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:panel id="projectmain_list" styleClass="margin">
+                        <p:dataTable id="itemDetail" var="item" value="#{promain001Controller.dataList}" binding="#{datatableController.defaultDataTable}" emptyMessage="">
+
+                            <p:column headerText="" style="text-align: center;width: 5%">
+                                <h:outputText value="#{item.seq}"/>
+                            </p:column>
+
+                            
+                            <p:column headerText="ชื่อโครง">
+                                <h:outputText value="#{item.projectmain.projectName}"/>
+                            </p:column>
+
+                            <p:column headerText="ลูกค้า">
+                                <h:outputText value="#{item.projectmain.customerName}"/>
+                            </p:column>
+                            
+                            <p:column headerText="รายละเอียดโครงการ">
+                                <h:outputText value="#{item.projectmain.projectDescription}"/>
+                            </p:column>
+
+                            <p:column headerText="" style="text-align: center;width: 10%;">
+                                <p:commandButton value="#{msg['btn.edit']}" icon="icon-edit" action="#{promain001Controller.find()}" update="@(form)" >
+                                    <f:setPropertyActionListener value="#{item.projectmain}" target="#{promain001Controller.projectmain}" />  
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </td>
+            </tr>
+        </table>
+    </p:panel>
+    <p:panel styleClass="margin">
+        <p:commandButton value="#{msg['btn.add']}" icon="icon-add" action="#{promain001Controller.insert()}" update="@(form)" global="false"/>
+    </p:panel>
+</ui:composition>

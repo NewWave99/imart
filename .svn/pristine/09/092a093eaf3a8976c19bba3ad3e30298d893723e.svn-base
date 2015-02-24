@@ -1,0 +1,120 @@
+package com.sscs.kdb.controller;
+
+import com.sscs.kdb.common.util.DateTimeUtil;
+import com.sscs.kdb.common.util.JsfUtil;
+import com.sscs.kdb.common.util.LoaderConfig;
+import com.sscs.kdb.entity.AuthUser;
+import com.sscs.kdb.dao.AuthUserFacadeLocal;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Locale;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * @author Mr.Aekasit Sengnualnim (Aek) Information System
+ *
+ * Siam Samsung Life Insurance Company Limited Charnissara II Tower 15 Floor,
+ * 2922/222-227 Phetchaburi Road Tadmai Bangkapi, Huai Khwang, Bangkok 10310
+ * THAILAND Tel : +66 0230 82245 #8242 Fax : +66 2298 0053 Mobile : +66 8912
+ * 90006 Skype : s.aekasit Email : aekasit@siamsamsung.co.th MSN :
+ * s.aekasit@hotmail.com http://www.siamsamsung.co.th
+ *
+ * @create 29-04-2554 10:52:02
+ */
+@ManagedBean(name = LocaleController.CONTROLLER_NAME)
+@SessionScoped
+public class LocaleController implements Serializable {
+
+    public static final String CONTROLLER_NAME = "localeController";
+    private Locale locale;
+    private String localeAddress;
+    private Date currentDt;
+    private UserInfoController userInfo;
+    @EJB
+    private AuthUserFacadeLocal authUserFacade;
+
+    public LocaleController() {
+    }
+
+    @PostConstruct
+    public void init() {
+        String l = LoaderConfig.getConfig("default_locale");
+        locale = new Locale(l.substring(0, 2), l.substring(3, 5));
+        FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+
+        HttpServletRequest req = (HttpServletRequest) JsfUtil.getExternalContext().getRequest();
+        localeAddress = req.getRemoteAddr();
+        currentDt = DateTimeUtil.currentDate();
+    }
+
+    public void changeLocale(String l) {
+        if (l.toLowerCase().equals("th")) {
+            locale = new Locale("th", "TH");
+        }
+
+        if (l.toLowerCase().equals("en")) {
+            locale = new Locale("en", "US");
+        }
+
+        FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+        //MenuController menuController = (MenuController) JsfUtil.getManagedBean(MenuController.CONTROLLER_NAME);
+        //menuController.load();
+    }
+
+    public void changeLocaleByUser(String l) {
+        if (l.toLowerCase().equals("th")) {
+            locale = new Locale("th", "TH");
+        }
+
+        if (l.toLowerCase().equals("en")) {
+            locale = new Locale("en", "US");
+        }
+
+        if (userInfo == null) {
+            userInfo = (UserInfoController) JsfUtil.getManagedBean(UserInfoController.CONTROLLER_NAME);
+        }
+
+        try {
+            AuthUser auth = userInfo.getAuthUser();
+            auth.setLocale(locale.toString());
+            authUserFacade.editLocale(auth);
+
+            FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
+            //MenuController menuController = (MenuController) JsfUtil.getManagedBean(MenuController.CONTROLLER_NAME);
+            //menuController.load();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public String getLocaleAddress() {
+        return localeAddress;
+    }
+
+    public void setLocaleAddress(String localeAddress) {
+        this.localeAddress = localeAddress;
+    }
+
+    public Date getCurrentDt() {
+        return currentDt;
+    }
+
+    public void setCurrentDt(Date currentDt) {
+        this.currentDt = currentDt;
+    }
+}

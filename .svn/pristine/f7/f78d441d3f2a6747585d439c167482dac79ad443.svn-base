@@ -1,0 +1,31 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.dao;
+
+import com.sscs.kdb.entity.Mainsector;
+import java.util.List;
+import javax.ejb.Local;
+
+/**
+ *
+ * @author Administrator
+ */
+@Local
+public interface MainsectorDAOLocal {
+
+    void create(Mainsector mainsector) throws Exception;
+
+    void edit(Mainsector mainsector) throws Exception;
+
+    void remove(Mainsector mainsector) throws Exception;
+
+    Mainsector find(Object id) throws Exception;
+
+    List<Mainsector> findAll() throws Exception;
+
+    List<Mainsector> findRange(int[] range) throws Exception;
+
+    int count() throws Exception;
+}

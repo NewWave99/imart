@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+            
+    <h:form id="navigation_form">
+            <p:graphicImage value="/resources/images/icon/cart.png" />
+            <span class="cart_point" >
+                <h:outputText value="#{orderList001Controller.cart_total}" styleClass="lbl_bold"/>
+            </span>
+            <h:outputText value="#{msg['menu.cart']}" styleClass="lbl_bold"/>
+                
+            <p:menubar rendered="true" style="font-size: 12px; padding:0px;border:0px;" autoDisplay="false">
+
+            <p:menuitem icon="icon-home" value="#{msg['menu.home']}" global="false" actionListener="#{navigationController.nextPage('dashboard','dashboardController.init()')}" update="@(form)"/>
+
+            <p:menuitem icon="icon-archives" value="#{msg['menu.product']}" actionListener="#{navigationController.nextPage('product/pro001')}" update="@(form)" global="false"/>
+            
+            <p:menuitem icon="icon-productype" value="#{msg['menu.categorie']}"  actionListener="#{navigationController.nextPage('order/ord_001_cate','orderList001Controller.init()')}" update="@(form)" global="false"/> 
+         
+            <p:menuitem icon="icon-basket" value="#{msg['menu.cart']}"  actionListener="#{navigationController.nextPage('order/ord_002_cart','orderList001Controller.init()')}" update="@(form)" global="false"/> 
+            
+            <p:menuitem icon="icon-report" value="#{msg['menu.invoice']}"  actionListener="#{navigationController.nextPage('invoice/inv001','invoice001Controller.init()')}" update="@(form)" global="false"/> 
+            
+        </p:menubar> 
+    </h:form>
+</ui:composition>

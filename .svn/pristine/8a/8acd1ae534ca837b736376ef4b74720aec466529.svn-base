@@ -1,0 +1,391 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.sscs.kdb.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+/**
+ *
+ * @author Administrator
+ */
+@Entity
+@Table(name = "consultant")
+@NamedQueries({
+    @NamedQuery(name = "Consultant.findAll", query = "SELECT c FROM Consultant c")})
+public class Consultant implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "ConsultID")
+    private String consultID;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "ConsultFirstName")
+    private String consultFirstName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "ConsultLastName")
+    private String consultLastName;
+    @Size(max = 1000)
+    @Column(name = "ShortDesc")
+    private String shortDesc;
+    @Size(max = 255)
+    @Column(name = "Company")
+    private String company;
+    @Size(max = 500)
+    @Column(name = "CPic")
+    private String cPic;
+    @Size(max = 13)
+    @Column(name = "SSID")
+    private String ssid;
+    @Size(max = 5)
+    @Column(name = "CSex")
+    private String cSex;
+    @Column(name = "CBirthDath")
+    @Temporal(TemporalType.DATE)
+    private Date cBirthDath;
+    @Size(max = 25)
+    @Column(name = "CWeight")
+    private String cWeight;
+    @Size(max = 25)
+    @Column(name = "CTall")
+    private String cTall;
+    @Size(max = 255)
+    @Column(name = "CNationality")
+    private String cNationality;
+    @Size(max = 255)
+    @Column(name = "CRace")
+    private String cRace;
+    @Size(max = 255)
+    @Column(name = "WebSite")
+    private String webSite;
+    @Size(max = 25)
+    @Column(name = "MobilePhone1")
+    private String mobilePhone1;
+    @Size(max = 25)
+    @Column(name = "MobilePhone2")
+    private String mobilePhone2;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 25)
+    @Column(name = "EMail")
+    private String eMail;
+    @Size(max = 25)
+    @Column(name = "CreateBy")
+    private String createBy;
+    @Size(max = 25)
+    @Column(name = "ModifyBy")
+    private String modifyBy;
+    @Column(name = "LastModified")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModified;
+    @OneToMany(mappedBy = "consultID")
+    private List<Consultexperience> consultexperienceList;
+    @OneToMany(mappedBy = "consultID")
+    private List<Bestpracticesolution> bestpracticesolutionList;
+    @OneToMany(mappedBy = "consultID")
+    private List<Consultantaddress> consultantaddressList;
+    @OneToMany(mappedBy = "consultID")
+    private List<Projectresource> projectresourceList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consultant")
+    private List<Consultantsector> consultantsectorList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consultant")
+    private List<Consultantspecialization> consultantspecializationList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consultant")
+    private List<Consultcertification> consultcertificationList;
+    @OneToMany(mappedBy = "consultID")
+    private List<Consultlang> consultlangList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "consultant")
+    private List<Consulteducation> consulteducationList;
+
+    public Consultant() {
+    }
+
+    public Consultant(String consultID) {
+        this.consultID = consultID;
+    }
+
+    public Consultant(String consultID, String consultFirstName, String consultLastName) {
+        this.consultID = consultID;
+        this.consultFirstName = consultFirstName;
+        this.consultLastName = consultLastName;
+    }
+
+    public String getConsultID() {
+        return consultID;
+    }
+
+    public void setConsultID(String consultID) {
+        this.consultID = consultID;
+    }
+
+    public String getConsultFirstName() {
+        return consultFirstName;
+    }
+
+    public void setConsultFirstName(String consultFirstName) {
+        this.consultFirstName = consultFirstName;
+    }
+
+    public String getConsultLastName() {
+        return consultLastName;
+    }
+
+    public void setConsultLastName(String consultLastName) {
+        this.consultLastName = consultLastName;
+    }
+
+    public String getShortDesc() {
+        return shortDesc;
+    }
+
+    public void setShortDesc(String shortDesc) {
+        this.shortDesc = shortDesc;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getCPic() {
+        return cPic;
+    }
+
+    public void setCPic(String cPic) {
+        this.cPic = cPic;
+    }
+
+    public String getSsid() {
+        return ssid;
+    }
+
+    public void setSsid(String ssid) {
+        this.ssid = ssid;
+    }
+
+    public String getCSex() {
+        return cSex;
+    }
+
+    public void setCSex(String cSex) {
+        this.cSex = cSex;
+    }
+
+    public Date getCBirthDath() {
+        return cBirthDath;
+    }
+
+    public void setCBirthDath(Date cBirthDath) {
+        this.cBirthDath = cBirthDath;
+    }
+
+    public String getCWeight() {
+        return cWeight;
+    }
+
+    public void setCWeight(String cWeight) {
+        this.cWeight = cWeight;
+    }
+
+    public String getCTall() {
+        return cTall;
+    }
+
+    public void setCTall(String cTall) {
+        this.cTall = cTall;
+    }
+
+    public String getCNationality() {
+        return cNationality;
+    }
+
+    public void setCNationality(String cNationality) {
+        this.cNationality = cNationality;
+    }
+
+    public String getCRace() {
+        return cRace;
+    }
+
+    public void setCRace(String cRace) {
+        this.cRace = cRace;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
+
+    public String getMobilePhone1() {
+        return mobilePhone1;
+    }
+
+    public void setMobilePhone1(String mobilePhone1) {
+        this.mobilePhone1 = mobilePhone1;
+    }
+
+    public String getMobilePhone2() {
+        return mobilePhone2;
+    }
+
+    public void setMobilePhone2(String mobilePhone2) {
+        this.mobilePhone2 = mobilePhone2;
+    }
+
+    public String getEMail() {
+        return eMail;
+    }
+
+    public void setEMail(String eMail) {
+        this.eMail = eMail;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public String getModifyBy() {
+        return modifyBy;
+    }
+
+    public void setModifyBy(String modifyBy) {
+        this.modifyBy = modifyBy;
+    }
+
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public List<Consultexperience> getConsultexperienceList() {
+        return consultexperienceList;
+    }
+
+    public void setConsultexperienceList(List<Consultexperience> consultexperienceList) {
+        this.consultexperienceList = consultexperienceList;
+    }
+
+    public List<Bestpracticesolution> getBestpracticesolutionList() {
+        return bestpracticesolutionList;
+    }
+
+    public void setBestpracticesolutionList(List<Bestpracticesolution> bestpracticesolutionList) {
+        this.bestpracticesolutionList = bestpracticesolutionList;
+    }
+
+    public List<Consultantaddress> getConsultantaddressList() {
+        return consultantaddressList;
+    }
+
+    public void setConsultantaddressList(List<Consultantaddress> consultantaddressList) {
+        this.consultantaddressList = consultantaddressList;
+    }
+
+    public List<Projectresource> getProjectresourceList() {
+        return projectresourceList;
+    }
+
+    public void setProjectresourceList(List<Projectresource> projectresourceList) {
+        this.projectresourceList = projectresourceList;
+    }
+
+    public List<Consultantsector> getConsultantsectorList() {
+        return consultantsectorList;
+    }
+
+    public void setConsultantsectorList(List<Consultantsector> consultantsectorList) {
+        this.consultantsectorList = consultantsectorList;
+    }
+
+    public List<Consultantspecialization> getConsultantspecializationList() {
+        return consultantspecializationList;
+    }
+
+    public void setConsultantspecializationList(List<Consultantspecialization> consultantspecializationList) {
+        this.consultantspecializationList = consultantspecializationList;
+    }
+
+    public List<Consultcertification> getConsultcertificationList() {
+        return consultcertificationList;
+    }
+
+    public void setConsultcertificationList(List<Consultcertification> consultcertificationList) {
+        this.consultcertificationList = consultcertificationList;
+    }
+
+    public List<Consultlang> getConsultlangList() {
+        return consultlangList;
+    }
+
+    public void setConsultlangList(List<Consultlang> consultlangList) {
+        this.consultlangList = consultlangList;
+    }
+
+    public List<Consulteducation> getConsulteducationList() {
+        return consulteducationList;
+    }
+
+    public void setConsulteducationList(List<Consulteducation> consulteducationList) {
+        this.consulteducationList = consulteducationList;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (consultID != null ? consultID.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Consultant)) {
+            return false;
+        }
+        Consultant other = (Consultant) object;
+        if ((this.consultID == null && other.consultID != null) || (this.consultID != null && !this.consultID.equals(other.consultID))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.sscs.kdb.entity.Consultant[ consultID=" + consultID + " ]";
+    }
+    
+}
