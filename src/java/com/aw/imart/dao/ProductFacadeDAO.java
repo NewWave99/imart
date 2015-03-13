@@ -48,7 +48,7 @@ public class ProductFacadeDAO extends AbstractFacade<Product> implements Product
         StringBuilder sb = new StringBuilder();
         sb.append("select o from Product o where o.productID like ?1");
     
-        if (StringUtil.isNotNullOrNotEmpty(product.getProductTypeID().getProductTypeID())) {
+        if (StringUtil.isNotNullOrNotEmpty(product.getProductTypeID())) {
             sb.append(" and o.productTypeID = '").append(product.getProductTypeID().getProductTypeID()).append("'");
         }
         if (StringUtil.isNotNullOrNotEmpty(product.getProductName())) {
